@@ -1,0 +1,25 @@
+{
+  "todo": [
+    {
+      "assignedTo": {
+        "name": "Admin"
+      },
+      "creation_time": "2023-03-27T17:39:02.342Z",
+      "id": "1",
+      "references": [],
+      "title": "Agregar pantalla de campaña"
+    },
+    {
+      "assignedTo": {
+        "name": "Admin"
+      },
+      "creation_time": "2023-03-27T17:39:19.821Z",
+      "id": "2",
+      "references": [],
+      "title": "Agregar pantalla de informes"
+    }
+  ],
+  "in-progress": [],
+  "testing": [],
+  "done": []
+}

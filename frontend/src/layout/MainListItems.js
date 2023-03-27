@@ -15,6 +15,8 @@ import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
 import ContactPhoneOutlinedIcon from "@material-ui/icons/ContactPhoneOutlined";
 import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
 import QuestionAnswerOutlinedIcon from "@material-ui/icons/QuestionAnswerOutlined";
+import { VolumeUpRounded } from "@material-ui/icons";
+import EqualizerIcon from "@material-ui/icons/Equalizer";
 
 import { i18n } from "../translate/i18n";
 import { WhatsAppsContext } from "../context/WhatsApp/WhatsAppsContext";
@@ -120,6 +122,16 @@ const MainListItems = (props) => {
               to="/queues"
               primary={i18n.t("mainDrawer.listItems.queues")}
               icon={<AccountTreeOutlinedIcon />}
+            />
+            <ListItemLink
+              to="/Campain"
+              primary="Campañas"
+              icon={<VolumeUpRounded />}
+            />
+            <ListItemLink
+              to="/Reports"
+              primary="Informes"
+              icon={<EqualizerIcon />}
             />
             <ListItemLink
               to="/settings"
