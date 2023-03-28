@@ -86,6 +86,20 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "scroll",
     ...theme.scrollbarStyles,
   },
+  tag: {
+    background: "#5050cf",
+    padding: 5,
+    borderRadius: 5,
+    color: "white",
+    margin: 4,
+  },
+  tagYellow: {
+    background: "#c1b63b",
+    padding: 5,
+    borderRadius: 5,
+    color: "white",
+    margin: 4,
+  },
 }));
 
 const Contacts = () => {
@@ -291,6 +305,7 @@ const Contacts = () => {
               <TableCell align="center">
                 {i18n.t("contacts.table.email")}
               </TableCell>
+              <TableCell align="center">Etiquetas</TableCell>
               <TableCell align="center">
                 {i18n.t("contacts.table.actions")}
               </TableCell>
@@ -306,6 +321,10 @@ const Contacts = () => {
                   <TableCell>{contact.name}</TableCell>
                   <TableCell align="center">{contact.number}</TableCell>
                   <TableCell align="center">{contact.email}</TableCell>
+                  <TableCell align="center">
+                    <span className={classes.tag}>Python</span>
+                    <span className={classes.tagYellow}>Javascript</span>
+                  </TableCell>
                   <TableCell align="center">
                     <IconButton
                       size="small"

@@ -39,13 +39,13 @@ const campains = [
     id: 1,
     name: "Curso 01",
     fecha: "01-02-23",
-    message: "Nueva clase",
+    message: "0/54",
   },
   {
     id: 2,
     name: "Curso 02",
     fecha: "01-03-23",
-    message: "Nueva clase",
+    message: "1/25",
   },
 ];
 
@@ -67,6 +67,14 @@ const Campain = () => {
 
   const handleCloseCampainModal = () => {
     setCampainModalOpen(false);
+  };
+
+  const handleOpenWatchProgress = () => {
+    console.log("Watch");
+  };
+
+  const handleConfirmSendVideos = () => {
+    console.log("Send");
   };
 
   return (
@@ -119,11 +127,11 @@ const Campain = () => {
                     </div>
                   </TableCell>
                   <TableCell align="center">
-                    <IconButton size="small">
+                    <IconButton size="small" onClick={handleOpenWatchProgress}>
                       <WatchLater />
                     </IconButton>
 
-                    <IconButton size="small">
+                    <IconButton size="small" onClick={handleConfirmSendVideos}>
                       <PlayArrow />
                     </IconButton>
                   </TableCell>
