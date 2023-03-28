@@ -11,6 +11,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import MultiSelect from "../MutliSelect";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,6 +77,7 @@ const CampainModal = ({ open, onClose, queueId }) => {
                     <MenuItem value={30}>Ibit Perú</MenuItem>
                   </Select>
                 </FormControl>
+                <MultiSelect />
                 <div>
                   <Field
                     as={TextField}

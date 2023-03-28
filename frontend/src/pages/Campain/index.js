@@ -6,6 +6,9 @@ import MainHeaderButtonsWrapper from "../../components/MainHeaderButtonsWrapper"
 import Title from "../../components/Title";
 import {
   Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   IconButton,
   makeStyles,
   Paper,
@@ -16,6 +19,7 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
+import DialogActions from "@material-ui/core/DialogActions";
 import { PlayArrow, WatchLater } from "@material-ui/icons";
 import TableRowSkeleton from "../../components/TableRowSkeleton";
 import CampainModal from "../../components/CampainModal/index";
@@ -31,6 +35,23 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  tag: {
+    background: "#5050cf",
+    padding: 5,
+    borderRadius: 5,
+    color: "white",
+    margin: 4,
+  },
+  tagYellow: {
+    background: "#c1b63b",
+    padding: 5,
+    borderRadius: 5,
+    color: "white",
+    margin: 4,
+  },
+  modal: {
+    width: 400,
   },
 }));
 
@@ -49,6 +70,85 @@ const campains = [
   },
 ];
 
+const contacts = [
+  {
+    id: 1,
+    name: "9123123123",
+    fecha: "01-02-23",
+    estado: "Leído",
+  },
+  {
+    id: 2,
+    name: "931231231",
+    fecha: "01-03-23",
+    estado: "Enviado",
+  },
+];
+
+const ConfirmSendClassModal = ({ open, onClose }) => {
+  return (
+    <Dialog open={open} onClose={onClose} scroll="paper">
+      <DialogTitle>Agregar Campaña</DialogTitle>
+      <DialogContent>
+        <h3>¿Esta seguro de enviar esta clase?</h3>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary" variant="outlined">
+          Cancelar
+        </Button>
+        <Button type="submit" color="primary" variant="contained">
+          Añadir
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+const WatchInformationClass = ({ open, onClose, classes }) => {
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      scroll="paper"
+      className={classes.modal}
+    >
+      <DialogTitle>Información de la clase</DialogTitle>
+      <DialogContent>
+        <Button variant="contained">Leído</Button>
+        <Button variant="outlined">Enviado</Button>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">Contacto</TableCell>
+              <TableCell align="center">Clase</TableCell>
+              <TableCell align="center">Estado</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <>
+              {contacts.map((campain) => (
+                <TableRow key={campain.id}>
+                  <TableCell align="center">{campain.name}</TableCell>
+                  <TableCell align="center">{campain.fecha}</TableCell>
+                  <TableCell align="center">{campain.estado}</TableCell>
+                </TableRow>
+              ))}
+            </>
+          </TableBody>
+        </Table>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary" variant="outlined">
+          Cancelar
+        </Button>
+        <Button type="submit" color="primary" variant="contained">
+          Añadir
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
 const Campain = () => {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -56,6 +156,9 @@ const Campain = () => {
   const classes = useStyles();
 
   const [campainModalOpen, setCampainModalOpen] = useState(false);
+  const [confirmCampainModalOpen, setConfirmCampainModalOpen] = useState(false);
+  const [watchInformationModalOpen, setWatchInformationModalOpen] =
+    useState(false);
 
   const handleCloseConfirmationModal = () => {
     setConfirmModalOpen(false);
@@ -69,12 +172,21 @@ const Campain = () => {
     setCampainModalOpen(false);
   };
 
-  const handleOpenWatchProgress = () => {
-    console.log("Watch");
+  const handleConfirmSendVideos = () => {
+    setConfirmCampainModalOpen(true);
   };
 
-  const handleConfirmSendVideos = () => {
-    console.log("Send");
+  const handleCloseConfirmSendVideos = () => {
+    console.log("Cerrar modal");
+    setConfirmCampainModalOpen(false);
+  };
+
+  const handleOpenInformationModal = () => {
+    setWatchInformationModalOpen(true);
+  };
+
+  const handleCloseInformationModal = () => {
+    setWatchInformationModalOpen(false);
   };
 
   return (
@@ -105,6 +217,7 @@ const Campain = () => {
             <TableRow>
               <TableCell align="center">Nombre Campaña</TableCell>
               <TableCell align="center">Creado</TableCell>
+              <TableCell align="center">Tags</TableCell>
               <TableCell align="center">Progreso</TableCell>
               <TableCell align="center">Acciones</TableCell>
             </TableRow>
@@ -116,18 +229,15 @@ const Campain = () => {
                   <TableCell align="center">{campain.name}</TableCell>
                   <TableCell align="center">{campain.fecha}</TableCell>
                   <TableCell align="center">
-                    <div className={classes.customTableCell}>
-                      <Typography
-                        style={{ width: 300, align: "center" }}
-                        noWrap
-                        variant="body2"
-                      >
-                        {campain.message}
-                      </Typography>
-                    </div>
+                    <span className={classes.tag}>Python</span>
+                    <span className={classes.tagYellow}>Javascript</span>
                   </TableCell>
+                  <TableCell align="center">{campain.message}</TableCell>
                   <TableCell align="center">
-                    <IconButton size="small" onClick={handleOpenWatchProgress}>
+                    <IconButton
+                      size="small"
+                      onClick={handleOpenInformationModal}
+                    >
                       <WatchLater />
                     </IconButton>
 
@@ -138,6 +248,15 @@ const Campain = () => {
                 </TableRow>
               ))}
               {loading && <TableRowSkeleton columns={4} />}
+              <ConfirmSendClassModal
+                open={confirmCampainModalOpen}
+                onClose={handleCloseConfirmSendVideos}
+              />
+              <WatchInformationClass
+                open={watchInformationModalOpen}
+                onClose={handleCloseInformationModal}
+                classes={classes}
+              />
             </>
           </TableBody>
         </Table>
