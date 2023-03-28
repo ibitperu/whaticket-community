@@ -106,12 +106,7 @@ const ConfirmSendClassModal = ({ open, onClose }) => {
 
 const WatchInformationClass = ({ open, onClose, classes }) => {
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      scroll="paper"
-      className={classes.modal}
-    >
+    <Dialog open={open} onClose={onClose} scroll="paper">
       <DialogTitle>Información de la clase</DialogTitle>
       <DialogContent>
         <Button variant="contained">Leído</Button>
