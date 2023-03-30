@@ -15,6 +15,7 @@ import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
 import ContactPhoneOutlinedIcon from "@material-ui/icons/ContactPhoneOutlined";
 import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
 import QuestionAnswerOutlinedIcon from "@material-ui/icons/QuestionAnswerOutlined";
+import Business from "@material-ui/icons/Business"
 import { VolumeUpRounded } from "@material-ui/icons";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 
@@ -141,7 +142,7 @@ const MainListItems = (props) => {
             <ListItemLink
               to="/companies"
               primary="Compañías"
-              icon={<SettingsOutlinedIcon />}
+              icon={<Business />}
             />
           </>
         )}
