@@ -195,14 +195,14 @@ const Campain = () => {
       </ConfirmationModal>
       <CampainModal open={campainModalOpen} onClose={handleCloseCampainModal} />
       <MainHeader>
-        <Title>Campañas</Title>
+        <Title>Cursos</Title>
         <MainHeaderButtonsWrapper>
           <Button
             variant="contained"
             color="primary"
             onClick={handleOpenCampainModal}
           >
-            Agregar campaña
+            Agregar Curso
           </Button>
         </MainHeaderButtonsWrapper>
       </MainHeader>
@@ -210,7 +210,7 @@ const Campain = () => {
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell align="center">Nombre Campaña</TableCell>
+              <TableCell align="center">Nombre Curso</TableCell>
               <TableCell align="center">Creado</TableCell>
               <TableCell align="center">Tags</TableCell>
               <TableCell align="center">Progreso</TableCell>

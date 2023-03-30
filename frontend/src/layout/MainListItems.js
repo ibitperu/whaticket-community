@@ -125,7 +125,7 @@ const MainListItems = (props) => {
             />
             <ListItemLink
               to="/Campain"
-              primary="Campañas"
+              primary="Cursos"
               icon={<VolumeUpRounded />}
             />
             <ListItemLink
@@ -136,6 +136,11 @@ const MainListItems = (props) => {
             <ListItemLink
               to="/settings"
               primary={i18n.t("mainDrawer.listItems.settings")}
+              icon={<SettingsOutlinedIcon />}
+            />
+            <ListItemLink
+              to="/companies"
+              primary="Compañías"
               icon={<SettingsOutlinedIcon />}
             />
           </>

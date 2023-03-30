@@ -28,19 +28,23 @@ const data = [
 const data2 = [
   {
     name: "A",
-    value: 20
+    value: 20,
+    amt:200,
   },
   {
     name: "B",
-    value: 30
+    value: 30,
+    amt: 300
   },
   {
     name: "C",
-    value: 20
+    value: 20,
+    amt: 300
   },
   {
     name: "D",
-    value: 30
+    value: 30,
+    amt: 300
   }
 ]
 
