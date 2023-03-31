@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react'
+import React, { useState, useEffect, useReducer } from "react";
 import MainContainer from "../../components/MainContainer";
 import MainHeader from "../../components/MainHeader";
 import MainHeaderButtonsWrapper from "../../components/MainHeaderButtonsWrapper";
@@ -31,8 +31,8 @@ import {
   Card,
   CardActions,
   CardContent,
-  Typography
-} from '@material-ui/core';
+  Typography,
+} from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -47,31 +47,31 @@ const companies = [
         id: 1,
         name: "Miguel",
         phone: "931123123",
-        email: "miguel@gmail.com"
+        email: "miguel@gmail.com",
       },
       {
         id: 2,
         name: "Pedro",
         phone: "931123123",
-        email: "pedro@gmail.com"
-      }
-    ], 
+        email: "pedro@gmail.com",
+      },
+    ],
     students: [
       {
         id: 1,
         name: "Miguel",
         phone: "931123123",
-        email: "miguel@gmail.com"
+        email: "miguel@gmail.com",
       },
       {
         id: 2,
         name: "Pedro",
         phone: "931123123",
-        email: "pedro@gmail.com"
-      }
-    ] 
-  }
-]
+        email: "pedro@gmail.com",
+      },
+    ],
+  },
+];
 
 const useStyles = makeStyles((theme) => ({
   mainPaper: {
@@ -81,17 +81,18 @@ const useStyles = makeStyles((theme) => ({
     ...theme.scrollbarStyles,
   },
   main: {
-    margin: 10
+    margin: 10,
   },
   btnWrapper: {
     position: "relative",
   },
   link: {
-    cursor: "pointer"
+    cursor: "pointer",
   },
   card: {
-    margin: 10
-  }
+    margin: 10,
+    border: "1px solid grey",
+  },
 }));
 
 const AddCompanieModal = ({ open, onClose, classes }) => {
@@ -102,12 +103,10 @@ const AddCompanieModal = ({ open, onClose, classes }) => {
         <form>
           <FormControl fullWidth>
             <InputLabel>Nombre</InputLabel>
-            <Input type="text"/>
+            <Input type="text" />
           </FormControl>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              Estado
-            </InputLabel>
+            <InputLabel id="demo-simple-select-label">Estado</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -118,16 +117,10 @@ const AddCompanieModal = ({ open, onClose, classes }) => {
             </Select>
           </FormControl>
         </form>
-        <FormControl>
-
-        </FormControl>
+        <FormControl></FormControl>
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={onClose}
-          color="secondary"
-          variant="outlined"
-        >
+        <Button onClick={onClose} color="secondary" variant="outlined">
           Cancelar
         </Button>
         <Button
@@ -140,22 +133,88 @@ const AddCompanieModal = ({ open, onClose, classes }) => {
         </Button>
       </DialogActions>
     </Dialog>
-  )
-}
+  );
+};
 
-const StudentsModal = ({ open, onClose, classes }) => {
+const StudentsModal = ({ open, onClose, classes, students }) => {
+  const [addStudentModalOpen, setAddStudentModalOpen] = useState(false);
+   
+  const handleOpenAddStudentModal = () => {
+    setAddStudentModalOpen(true);
+  };
+
+  const handleCloseAddStudentModal = () => {
+    setAddStudentModalOpen(false);
+  };
+
   return (
     <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
+      <AddStudentModal
+        open={addStudentModalOpen}
+        onClose={handleCloseAddStudentModal}
+        classes={classes}
+      />
       <DialogTitle>Estudiantes</DialogTitle>
       <DialogContent dividers>
-        <div>Estudiantes</div>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">Nombre</TableCell>
+              <TableCell align="center">Teléfono</TableCell>
+              <TableCell align="center">Email</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {students.map((student) => (
+              <TableRow key={student.id}>
+                <TableCell align="center">{student.name}</TableCell>
+                <TableCell align="center">{student.phone}</TableCell>
+                <TableCell align="center">{student.email}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </DialogContent>
       <DialogActions>
+        <Button onClick={onClose} color="secondary" variant="outlined">
+          Cancelar
+        </Button>
         <Button
-          onClick={onClose}
-          color="secondary"
-          variant="outlined"
+          type="submit"
+          color="primary"
+          variant="contained"
+          className={classes.btnWrapper}
+          onClick={handleOpenAddStudentModal}
         >
+          Añadir
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+const AddStudentModal = ({ open, onClose, classes }) => {
+  return (
+    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth> 
+      <DialogTitle>Agregar estudiante</DialogTitle>
+      <DialogContent dividers>
+        <form>
+          <FormControl fullWidth>
+            <InputLabel>Nombre</InputLabel>
+            <Input type="text" />
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel>Email</InputLabel>
+            <Input type="text" />
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel>Teléfono</InputLabel>
+            <Input type="text" />
+          </FormControl>
+        </form>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary" variant="outlined">
           Cancelar
         </Button>
         <Button
@@ -167,41 +226,88 @@ const StudentsModal = ({ open, onClose, classes }) => {
           Añadir
         </Button>
       </DialogActions>
-    </Dialog> 
-  )
-}
+    </Dialog>
+  );
+};
 
 const ContactsModal = ({ open, onClose, classes, contacts }) => {
+  const [addContactModalOpen, setAddContactModalOpen] = useState(false);
+   
+  const handleOpenAddContactModal = () => {
+    setAddContactModalOpen(true);
+  };
+
+  const handleCloseAddContactModal = () => {
+    setAddContactModalOpen(false);
+  };
+
   return (
     <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
+      <AddContactModal
+        open={addContactModalOpen}
+        onClose={handleCloseAddContactModal}
+        classes={classes}
+      />
       <DialogTitle>Contactos</DialogTitle>
       <DialogContent dividers>
-        {
-          contacts.map(contact => 
-            <Card sx={{ minWidth: 275 }} className={classes.card}>
-              <CardContent>
-                <Typography variant="h5" component="div">
-                  Miguel Catillo
-                </Typography>
-                <FormControl fullWidth>
-                  <InputLabel>Correo</InputLabel>
-                  <Input type="email" value={contact.email}/>
-                </FormControl>
-                <FormControl fullWidth>
-                  <InputLabel>Número</InputLabel>
-                  <Input type="number" value={contact.phone} />
-                </FormControl>
-              </CardContent>
-            </Card>
-          )
-        } 
+        {contacts.map((contact) => (
+          <Card sx={{ minWidth: 275 }} className={classes.card}>
+            <CardContent>
+              <Typography variant="h5" component="div">
+                Miguel Catillo
+              </Typography>
+              <FormControl fullWidth>
+                <InputLabel>Correo</InputLabel>
+                <Input type="email" value={contact.email} />
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel>Número</InputLabel>
+                <Input type="number" value={contact.phone} />
+              </FormControl>
+            </CardContent>
+          </Card>
+        ))}
       </DialogContent>
       <DialogActions>
+        <Button onClick={onClose} color="secondary" variant="outlined">
+          Cancelar
+        </Button>
         <Button
-          onClick={onClose}
-          color="secondary"
-          variant="outlined"
+          type="submit"
+          color="primary"
+          variant="contained"
+          className={classes.btnWrapper}
+          onClick={handleOpenAddContactModal}
         >
+          Añadir
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+const AddContactModal = ({ open, onClose, classes }) => {
+  return (
+    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth> 
+      <DialogTitle>Agregar Contacto</DialogTitle>
+      <DialogContent dividers>
+        <form>
+          <FormControl fullWidth>
+            <InputLabel>Nombre</InputLabel>
+            <Input type="text" />
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel>Email</InputLabel>
+            <Input type="text" />
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel>Teléfono</InputLabel>
+            <Input type="text" />
+          </FormControl>
+        </form>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary" variant="outlined">
           Cancelar
         </Button>
         <Button
@@ -213,51 +319,45 @@ const ContactsModal = ({ open, onClose, classes, contacts }) => {
           Añadir
         </Button>
       </DialogActions>
-    </Dialog> 
-  )
-}
+    </Dialog>
+  );
+};
 
 const Companies = () => {
   const classes = useStyles();
-  const [companieModalOpen, setCompanieModalOpen] = useState(false)
-  const [contactsModalOpen, setContactsModalOpen] = useState(false)
-  const [studentsModalOpen, setStudentsModalOpen] = useState(false)
+  const [companieModalOpen, setCompanieModalOpen] = useState(false);
+  const [contactsModalOpen, setContactsModalOpen] = useState(false);
+  const [studentsModalOpen, setStudentsModalOpen] = useState(false);
 
   const handleOpenCompanieModal = () => {
-    setCompanieModalOpen(true)
-  }
-  
+    setCompanieModalOpen(true);
+  };
+
   const handleCloseCompanieModal = () => {
-    setCompanieModalOpen(false)
-  }
+    setCompanieModalOpen(false);
+  };
 
   const handleOpenStudentsModal = () => {
-    setStudentsModalOpen(true)
-  }
-  
+    setStudentsModalOpen(true);
+  };
+
   const handleCloseStudentsModal = () => {
-    setStudentsModalOpen(false)
-  }
+    setStudentsModalOpen(false);
+  };
 
   const handleOpenContactsModal = () => {
-    setContactsModalOpen(true)
-  }
-  
+    setContactsModalOpen(true);
+  };
+
   const handleCloseContactsModal = () => {
-    setContactsModalOpen(false)
-  }
+    setContactsModalOpen(false);
+  }; 
 
   return (
     <MainContainer>
       <AddCompanieModal
         open={companieModalOpen}
         onClose={handleCloseCompanieModal}
-        classes={classes}
-      />
-
-      <StudentsModal
-        open={studentsModalOpen}
-        onClose={handleCloseStudentsModal}
         classes={classes}
       />
 
@@ -284,69 +384,67 @@ const Companies = () => {
           </Button>
         </MainHeaderButtonsWrapper>
       </MainHeader>
-      <Paper
-        className={classes.mainPaper}
-        variant="outlined"
-      >
+      <Paper className={classes.mainPaper} variant="outlined">
         <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell align="center">Nombre</TableCell>
               <TableCell align="center">Contactos</TableCell>
               <TableCell align="center">Cantidad de alumnos</TableCell>
-              <TableCell align="center">Estado</TableCell>              
+              <TableCell align="center">Estado</TableCell>
               <TableCell align="center">Fecha de creación</TableCell>
               <TableCell align="center">Acciones</TableCell>
-            </TableRow> 
+            </TableRow>
           </TableHead>
           <TableBody>
-              {companies.map((companie) => (
-                <TableRow key={companie.id}>
-                  <ContactsModal
-                    open={contactsModalOpen}
-                    onClose={handleCloseContactsModal}
-                    classes={classes}
-                    contacts={companie.contacts}
-                  />
-                  <TableCell align="center">{companie.name}</TableCell>
-                  <TableCell align="center">
-                    <Link
-                      className={classes.link}
-                      onClick={handleOpenContactsModal}
-                    >
-                      Ver ({companie.contacts.length})
-                    </Link> 
-                  </TableCell>
-                  <TableCell align="center">
-                    <Link
-                      className={classes.link}
-                      onClick={handleOpenStudentsModal}
-                    >
-                      Ver ({companie.students.length})
-                    </Link> 
-                  </TableCell>
-                  <TableCell align="center">Habilitado</TableCell>
-                  <TableCell align="center">{companie.date}</TableCell>
-                  <TableCell align="center">
-                    <IconButton
-                      size="small"
-                      onClick={handleOpenCompanieModal}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      size="small"
-                    >
-                      <DeleteOutlineIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+            {companies.map((companie) => (
+              <TableRow key={companie.id}>
+                <ContactsModal
+                  open={contactsModalOpen}
+                  onClose={handleCloseContactsModal}
+                  classes={classes}
+                  contacts={companie.contacts}
+                />
+                <StudentsModal
+                  open={studentsModalOpen}
+                  onClose={handleCloseStudentsModal}
+                  classes={classes}
+                  students={companie.students}
+                />
+                <TableCell align="center">{companie.name}</TableCell>
+                <TableCell align="center">
+                  <Link
+                    className={classes.link}
+                    onClick={handleOpenContactsModal}
+                  >
+                    Ver ({companie.contacts.length})
+                  </Link>
+                </TableCell>
+                <TableCell align="center">
+                  <Link
+                    className={classes.link}
+                    onClick={handleOpenStudentsModal}
+                  >
+                    Ver ({companie.students.length})
+                  </Link>
+                </TableCell>
+                <TableCell align="center">Habilitado</TableCell>
+                <TableCell align="center">{companie.date}</TableCell>
+                <TableCell align="center">
+                  <IconButton size="small" onClick={handleOpenCompanieModal}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton size="small">
+                    <DeleteOutlineIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
         </Table>
       </Paper>
     </MainContainer>
-  )
-}
+  );
+};
 
-export default Companies
+export default Companies;
