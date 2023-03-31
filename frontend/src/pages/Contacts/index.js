@@ -25,6 +25,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
+import {
+  Switch,
+} from "@material-ui/core";
 
 import api from "../../services/api";
 import TableRowSkeleton from "../../components/TableRowSkeleton";
@@ -458,6 +461,7 @@ const Contacts = () => {
                         </IconButton>
                       )}
                     />
+                    <Switch />
                   </TableCell>
                 </TableRow>
               ))}

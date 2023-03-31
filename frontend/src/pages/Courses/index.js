@@ -34,6 +34,7 @@ import {
   Typography,
   FormControlLabel,
   Checkbox,
+  Switch
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -95,11 +96,13 @@ const courses = [
         id: 1,
         name: "Miguel",
         progress: "54/199",
+        company: "Ibit"
       },
       {
         id: 2,
         name: "Pedro",
         progress: "54/199",
+        company: "Ibit"
       },
     ],
     classes: [],
@@ -138,6 +141,8 @@ const videos = [
 ];
 
 const AddStudentModal = ({ open, onClose, classes, students }) => {
+  console.log(students)
+
   return (
     <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
       <MainHeader>
@@ -394,6 +399,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
             <TableRow>F. Inicio: 02/01/2023</TableRow>
             <TableRow>
               <TableCell align="center">Nombre</TableCell>
+              <TableCell align="center">Empresa</TableCell>
               <TableCell align="center">Progreso</TableCell>
               <TableCell align="center">Acciones</TableCell>
             </TableRow>
@@ -402,6 +408,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
             {students.map((student) => (
               <TableRow key={student.id}>
                 <TableCell align="center">{student.name}</TableCell>
+                <TableCell align="center">{student.company}</TableCell>
                 <TableCell align="center">{student.progress}</TableCell>
                 <TableCell align="center">
                   <Link className={classes.link} onClick={handleOpenVideoModal}>
@@ -417,6 +424,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
             <TableRow>F. Inicio: 08/01/2023</TableRow>
             <TableRow>
               <TableCell align="center">Nombre</TableCell>
+              <TableCell align="center">Empresa</TableCell>
               <TableCell align="center">Progreso</TableCell>
               <TableCell align="center">Acciones</TableCell>
             </TableRow>
@@ -425,6 +433,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
             {students.map((student) => (
               <TableRow key={student.id}>
                 <TableCell align="center">{student.name}</TableCell>
+                <TableCell align="center">{student.company}</TableCell>
                 <TableCell align="center">{student.progress}</TableCell>
                 <TableCell align="center">
                   <Link className={classes.link} onClick={handleOpenVideoModal}>
@@ -454,9 +463,61 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
   );
 };
 
+const AddClasesModal = ({ open, onClose, classes }) => {
+  return (
+    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
+      <DialogTitle>Agregar clases</DialogTitle>
+      <DialogContent dividers>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">N</TableCell>
+              <TableCell align="center">Título</TableCell>
+              <TableCell align="center">Estado</TableCell>
+              <TableCell align="center">Acción</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {videos.map((video, index) => (
+              <TableRow key={video.id}>
+                <TableCell align="center">{index + 1}</TableCell>
+                <TableCell align="center">{video.name}</TableCell>
+                <TableCell align="center">Habilitado</TableCell>
+                <TableCell align="center">
+                  <IconButton size="small">
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton size="small">
+                    <DeleteOutlineIcon />
+                  </IconButton>
+                  <Switch />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary" variant="outlined">
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          className={classes.btnWrapper}
+        >
+          Añadir
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
 const Courses = () => {
   const [studentsModalOpen, setStudentsModalOpen] = useState(false);
   const [addCourseModal, setAddCourseModal] = useState(false);
+  const [addClassModal, setAddClassModal] = useState(false);
 
   const handleOpenStudentsModal = () => {
     setStudentsModalOpen(true);
@@ -474,6 +535,14 @@ const Courses = () => {
     setAddCourseModal(false);
   };
 
+  const handleOpenAddClassesModal = () => {
+    setAddClassModal(true);
+  };
+
+  const handleCloseAddClassesModal = () => {
+    setAddClassModal(false);
+  };
+
   const classes = useStyles();
 
   return (
@@ -481,6 +550,11 @@ const Courses = () => {
       <AddCourseModal
         open={addCourseModal}
         onClose={handleCloseAddCourseModal}
+        classes={classes}
+      />
+      <AddClasesModal
+        open={addClassModal}
+        onClose={handleCloseAddClassesModal}
         classes={classes}
       />
       <MainHeader>
@@ -538,7 +612,11 @@ const Courses = () => {
                     Ver ({course.students.length})
                   </Link>
                 </TableCell>
-                <TableCell align="center">50</TableCell>
+                <TableCell align="center">
+                  <Button onClick={handleOpenAddClassesModal}>
+                    50
+                  </Button>  
+                </TableCell>
                 <TableCell align="center">{course.school}</TableCell>
                 <TableCell align="center">
                   <Link className={classes.link}>Ver examen</Link>
@@ -554,6 +632,7 @@ const Courses = () => {
                   <IconButton size="small">
                     <DeleteOutlineIcon />
                   </IconButton>
+                  <Switch />
                 </TableCell>
               </TableRow>
             ))}
