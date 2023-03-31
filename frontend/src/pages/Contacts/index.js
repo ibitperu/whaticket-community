@@ -17,6 +17,11 @@ import SearchIcon from "@material-ui/icons/Search";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+
 import IconButton from "@material-ui/core/IconButton";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
@@ -100,7 +105,87 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     margin: 4,
   },
+  main: {
+    margin: 10,
+  },
+  btnWrapper: {
+    position: "relative",
+  },
+  link: {
+    cursor: "pointer",
+  },
+  card: {
+    margin: 10,
+    border: "1px solid grey",
+  },
+  studentTable: {
+    marginTop: 20,
+  },
 }));
+
+const courses = [
+  {
+    id: 1,
+    date: "10/03/23",
+    name: "Programación básica",
+    school: "Programación",
+    final_exam: null,
+    proyect: null,
+    enable: true,
+  },
+  {
+    id: 2,
+    name: "Marketing",
+    date: "10/03/23",
+    school: "Programación",
+    final_exam: null,
+    proyect: null,
+    enable: true,
+  },
+];
+
+const CoursesModal = ({ open, onClose, courses, classes }) => {
+  return (
+    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
+      <DialogTitle>Videos</DialogTitle>
+      <DialogContent dividers>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">N</TableCell>
+              <TableCell align="center">Fecha inicio</TableCell>
+              <TableCell align="center">Nombre</TableCell>
+              <TableCell align="center">Progreso</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {courses.map((course, index) => (
+              <TableRow key={course.id}>
+                <TableCell align="center">{index + 1}</TableCell>
+                <TableCell align="center">{course.date}</TableCell>
+                <TableCell align="center">{course.name}</TableCell>
+                <TableCell align="center">12/23</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary" variant="outlined">
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          className={classes.btnWrapper}
+        >
+          Añadir
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
 const Contacts = () => {
   const classes = useStyles();
@@ -117,6 +202,15 @@ const Contacts = () => {
   const [deletingContact, setDeletingContact] = useState(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [hasMore, setHasMore] = useState(false);
+  const [addCourseModal, setAddCourseModal] = useState(false);
+
+  const handleOpenAddCourseModal = () => {
+    setAddCourseModal(true);
+  };
+
+  const handleCloseAddCourseModal = () => {
+    setAddCourseModal(false);
+  };
 
   useEffect(() => {
     dispatch({ type: "RESET" });
@@ -237,6 +331,12 @@ const Contacts = () => {
         aria-labelledby="form-dialog-title"
         contactId={selectedContactId}
       ></ContactModal>
+      <CoursesModal
+        open={addCourseModal}
+        onClose={handleCloseAddCourseModal}
+        courses={courses}
+        classes={classes}
+      />
       <ConfirmationModal
         title={
           deletingContact
@@ -325,9 +425,7 @@ const Contacts = () => {
                   <TableCell align="center">{contact.number}</TableCell>
                   <TableCell align="center">{contact.email}</TableCell>
                   <TableCell align="center">
-                    <Link>
-                      Ver cursos
-                    </Link>
+                    <Button className={classes.link} onClick={handleOpenAddCourseModal}>Ver cursos</Button>
                   </TableCell>
                   <TableCell align="center">Ibit</TableCell>
                   <TableCell align="center">Si</TableCell>
