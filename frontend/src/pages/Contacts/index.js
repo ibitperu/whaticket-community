@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer, useContext } from "react";
 import openSocket from "../../services/socket-io";
 import { toast } from "react-toastify";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -305,7 +305,10 @@ const Contacts = () => {
               <TableCell align="center">
                 {i18n.t("contacts.table.email")}
               </TableCell>
-              <TableCell align="center">Etiquetas</TableCell>
+              <TableCell align="center">Cursos</TableCell>
+              <TableCell align="center">Empresa</TableCell>
+              <TableCell align="center">Habilitado</TableCell>
+              <TableCell align="center">Fecha ingreso</TableCell>
               <TableCell align="center">
                 {i18n.t("contacts.table.actions")}
               </TableCell>
@@ -322,9 +325,13 @@ const Contacts = () => {
                   <TableCell align="center">{contact.number}</TableCell>
                   <TableCell align="center">{contact.email}</TableCell>
                   <TableCell align="center">
-                    <span className={classes.tag}>Python</span>
-                    <span className={classes.tagYellow}>Javascript</span>
+                    <Link>
+                      Ver cursos
+                    </Link>
                   </TableCell>
+                  <TableCell align="center">Ibit</TableCell>
+                  <TableCell align="center">Si</TableCell>
+                  <TableCell align="center">03/02/23</TableCell>
                   <TableCell align="center">
                     <IconButton
                       size="small"
