@@ -34,10 +34,11 @@ import {
   Typography,
   FormControlLabel,
   Checkbox,
-  Switch
+  Switch,
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
+import { CloudUploadOutlined, PhotoCamera } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   mainPaper: {
@@ -62,6 +63,9 @@ const useStyles = makeStyles((theme) => ({
   studentTable: {
     marginTop: 20,
   },
+  typography: {
+    marginRight: 7,
+  },
 }));
 
 const courses = [
@@ -73,13 +77,13 @@ const courses = [
         id: 1,
         name: "Miguel",
         progress: "54/199",
-        company: "Ibit"
+        company: "Ibit",
       },
       {
         id: 2,
         name: "Pedro",
         progress: "54/199",
-        company: "Ibit"
+        company: "Ibit",
       },
     ],
     classes: [],
@@ -96,13 +100,13 @@ const courses = [
         id: 1,
         name: "Miguel",
         progress: "54/199",
-        company: "Ibit"
+        company: "Ibit",
       },
       {
         id: 2,
         name: "Pedro",
         progress: "54/199",
-        company: "Ibit"
+        company: "Ibit",
       },
     ],
     classes: [],
@@ -141,7 +145,7 @@ const videos = [
 ];
 
 const AddStudentModal = ({ open, onClose, classes, students }) => {
-  console.log(students)
+  console.log(students);
 
   return (
     <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
@@ -264,18 +268,34 @@ const AddCourseModal = ({ open, onClose, classes }) => {
             <InputLabel>Escuela</InputLabel>
             <Input type="text" />
           </FormControl>
-          <FormControl fullWidth>
-            <InputLabel>Examen final</InputLabel>
-            <Input type="text" />
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel>Proyecto final</InputLabel>
-            <Input type="text" />
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel>Estado</InputLabel>
-            <Input type="text" />
-          </FormControl>
+
+          <IconButton
+            color="primary"
+            aria-label="upload picture"
+            component="label"
+          >
+            <Typography className={classes.typography}>Examen final</Typography>
+            <input hidden accept="image/*" type="file" />
+            <CloudUploadOutlined />
+          </IconButton>
+
+          <IconButton
+            color="primary"
+            aria-label="upload picture"
+            component="label"
+          >
+            <Typography className={classes.typography}>
+              Proyecto final
+            </Typography>
+            <input hidden accept="image/*" type="file" />
+            <CloudUploadOutlined />
+          </IconButton>
+          <FormControlLabel
+            value="start"
+            control={<Switch color="primary" />}
+            label="Habilitado"
+            labelPlacement="start"
+          />
         </form>
         <Table size="small" className={classes.studentTable}>
           <TableHead>
@@ -613,9 +633,7 @@ const Courses = () => {
                   </Link>
                 </TableCell>
                 <TableCell align="center">
-                  <Button onClick={handleOpenAddClassesModal}>
-                    50
-                  </Button>  
+                  <Button onClick={handleOpenAddClassesModal}>50</Button>
                 </TableCell>
                 <TableCell align="center">{course.school}</TableCell>
                 <TableCell align="center">
