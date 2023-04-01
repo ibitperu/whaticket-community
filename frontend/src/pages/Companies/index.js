@@ -74,6 +74,27 @@ const companies = [
   },
 ];
 
+const courses = [
+  {
+    id: 1,
+    date: "10/03/23",
+    name: "Programación básica",
+    school: "Programación",
+    final_exam: null,
+    proyect: null,
+    enable: true,
+  },
+  {
+    id: 2,
+    name: "Marketing",
+    date: "10/03/23",
+    school: "Programación",
+    final_exam: null,
+    proyect: null,
+    enable: true,
+  },
+];
+
 const useStyles = makeStyles((theme) => ({
   mainPaper: {
     flex: 1,
@@ -137,8 +158,60 @@ const AddCompanieModal = ({ open, onClose, classes }) => {
   );
 };
 
+const CoursesModal = ({ open, onClose, courses, classes }) => {
+  return (
+    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
+      <DialogTitle>Videos</DialogTitle>
+      <DialogContent dividers>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">N</TableCell>
+              <TableCell align="center">Fecha inicio</TableCell>
+              <TableCell align="center">Nombre</TableCell>
+              <TableCell align="center">Progreso</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {courses.map((course, index) => (
+              <TableRow key={course.id}>
+                <TableCell align="center">{index + 1}</TableCell>
+                <TableCell align="center">{course.date}</TableCell>
+                <TableCell align="center">{course.name}</TableCell>
+                <TableCell align="center">12/23</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary" variant="outlined">
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          className={classes.btnWrapper}
+        >
+          Añadir
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
 const StudentsModal = ({ open, onClose, classes, students }) => {
   const [addStudentModalOpen, setAddStudentModalOpen] = useState(false);
+  const [addCourseModal, setAddCourseModal] = useState(false);
+
+  const handleOpenAddCourseModal = () => {
+    setAddCourseModal(true);
+  };
+
+  const handleCloseAddCourseModal = () => {
+    setAddCourseModal(false);
+  };
    
   const handleOpenAddStudentModal = () => {
     setAddStudentModalOpen(true);
@@ -155,6 +228,12 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
         onClose={handleCloseAddStudentModal}
         classes={classes}
       />
+      <CoursesModal
+        open={addCourseModal}
+        onClose={handleCloseAddCourseModal}
+        courses={courses}
+        classes={classes}
+      />
       <DialogTitle>Estudiantes</DialogTitle>
       <DialogContent dividers>
         <Table size="small">
@@ -163,6 +242,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
               <TableCell align="center">Nombre</TableCell>
               <TableCell align="center">Teléfono</TableCell>
               <TableCell align="center">Email</TableCell>
+              <TableCell align="center">Cursos</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -171,6 +251,9 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
                 <TableCell align="center">{student.name}</TableCell>
                 <TableCell align="center">{student.phone}</TableCell>
                 <TableCell align="center">{student.email}</TableCell>
+                <TableCell align="center">
+                    <Button className={classes.link} onClick={handleOpenAddCourseModal}>Ver</Button>
+                  </TableCell>
               </TableRow>
             ))}
           </TableBody>
