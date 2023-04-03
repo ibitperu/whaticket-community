@@ -18,6 +18,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
+import { Visibility } from '@material-ui/icons';
 
 import {
   FormControl,
@@ -483,10 +484,76 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
   );
 };
 
-const AddClasesModal = ({ open, onClose, classes }) => {
+const AddClassModal = ({ open, onClose, classes }) => {
   return (
     <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
       <DialogTitle>Agregar clases</DialogTitle>
+      <DialogContent dividers>
+        <form>
+          <FormControl fullWidth>
+            <InputLabel>Nombre</InputLabel>
+            <Input type="text" />
+          </FormControl>
+          <TextField
+            fullWidth
+            id="outlined-textarea"
+            label="Descripción"
+            placeholder="Escriba su descripción..."
+            multiline
+          />
+          <IconButton
+            color="primary"
+            aria-label="upload picture"
+            component="label"
+          >
+            <Typography className={classes.typography}>Video</Typography>
+            <input hidden accept="image/*" type="file" />
+            <CloudUploadOutlined />
+          </IconButton>
+          <FormControlLabel
+            value="start"
+            control={<Switch color="primary" />}
+            label="Habilitado"
+            labelPlacement="start"
+          />
+        </form>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary" variant="outlined">
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          className={classes.btnWrapper}
+        >
+          Aceptar
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+const AddClasesModal = ({ open, onClose, classes }) => {
+  const [addClassOpenModel, setAddClassOpenModel] = useState(false);
+
+  const handleOpenAddClassModel = () => {
+    setAddClassOpenModel(true);
+  };
+
+  const handleCloseAddClassModel = () => {
+    setAddClassOpenModel(false);
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
+      <AddClassModal
+        open={addClassOpenModel}
+        onClose={handleCloseAddClassModel}
+        classes={classes}
+      />
+      <DialogTitle>Clases</DialogTitle>
       <DialogContent dividers>
         <Table size="small">
           <TableHead>
@@ -499,7 +566,7 @@ const AddClasesModal = ({ open, onClose, classes }) => {
           </TableHead>
           <TableBody>
             {videos.map((video, index) => (
-              <TableRow key={video.id}>
+              <TableRow key={index}>
                 <TableCell align="center">{index + 1}</TableCell>
                 <TableCell align="center">{video.name}</TableCell>
                 <TableCell align="center">Habilitado</TableCell>
@@ -526,6 +593,7 @@ const AddClasesModal = ({ open, onClose, classes }) => {
           color="primary"
           variant="contained"
           className={classes.btnWrapper}
+          onClick={handleOpenAddClassModel}
         >
           Añadir
         </Button>
@@ -633,7 +701,9 @@ const Courses = () => {
                   </Link>
                 </TableCell>
                 <TableCell align="center">
-                  <Button onClick={handleOpenAddClassesModal}>50</Button>
+                  <IconButton onClick={handleOpenAddClassesModal}>
+                    <Visibility />
+                  </IconButton>
                 </TableCell>
                 <TableCell align="center">{course.school}</TableCell>
                 <TableCell align="center">
