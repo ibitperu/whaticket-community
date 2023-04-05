@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS `companies` CASCADE;
 
 DROP TABLE IF EXISTS `companies_contacts` CASCADE;
 
-DROP TABLE IF EXISTS `contacts` CASCADE;
+ /* DROP TABLE IF EXISTS `contacts` CASCADE;*/
 
 DROP TABLE IF EXISTS `contacts_courses` CASCADE;
 
@@ -25,11 +25,11 @@ DROP TABLE IF EXISTS `roles` CASCADE;
 
 DROP TABLE IF EXISTS `schools` CASCADE;
 
-DROP TABLE IF EXISTS `users` CASCADE;
+ /* DROP TABLE IF EXISTS `users` CASCADE; */
 
 /* Create Tables */
 CREATE TABLE `classes` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(50) NOT NULL,
 	`description` VARCHAR(255) NULL,
 	`message` TEXT NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE `classes` (
 );
 
 CREATE TABLE `companies` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255) NOT NULL,
 	`description` VARCHAR(1024) NULL,
 	`createdAt` DATETIME NOT NULL,
@@ -56,15 +56,14 @@ CREATE TABLE `companies_contacts` (
 );
 
 CREATE TABLE `contacts_courses` (
-	`id` INT NOT NULL,
 	`startDate` DATETIME NOT NULL,
 	`courseId` INT NOT NULL,
 	`contactId` INT NOT NULL
 );
 
 CREATE TABLE `courses` (
-	`id` INT NOT NULL,
-	`name` VARCHAR(10) NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(50) NOT NULL,
 	`description` VARCHAR(255) NULL,
 	`enabled` BOOL NOT NULL,
 	`finalExam` VARCHAR(255) NULL,
@@ -74,7 +73,7 @@ CREATE TABLE `courses` (
 );
 
 CREATE TABLE `modules` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(50) NOT NULL,
 	`description` VARCHAR(255) NULL,
 	`enabled` BOOL NOT NULL,
@@ -83,14 +82,14 @@ CREATE TABLE `modules` (
 );
 
 CREATE TABLE `roles` (
-	`id` VARCHAR(50) NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(50) NOT NULL,
 	`description` VARCHAR(255) NULL,
 	CONSTRAINT `PK_roles` PRIMARY KEY (`id` ASC)
 );
 
 CREATE TABLE `schools` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(50) NOT NULL,
 	`description` VARCHAR(255) NULL,
 	`enabled` BOOL NOT NULL,
@@ -112,11 +111,6 @@ ALTER TABLE
 	`companies_contacts`
 ADD
 	INDEX `IXFK_companies_contactas_contacts` (`contactId` ASC);
-
-ALTER TABLE
-	`contacts`
-ADD
-	CONSTRAINT `number` UNIQUE (`number` ASC);
 
 ALTER TABLE
 	`contacts_courses`
