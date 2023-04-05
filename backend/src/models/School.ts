@@ -11,16 +11,15 @@ import {
   Default,
   HasMany,
   ForeignKey,
-  BelongsTo
 } from "sequelize-typescript";
-import School from "./School";
+import Course from "./Course";
 
 @Table
-class Course extends Model<Course> {
-  @PrimaryKey
+class School extends Model<School> {
+   @PrimaryKey
   @AutoIncrement
   @Column
-  id: number;
+  id: number; 
 
   @Column
   name: string;
@@ -31,18 +30,8 @@ class Course extends Model<Course> {
   @Column
   enabled: boolean;
 
-  @Column
-  finalExam: string;
-
-  @Column
-  finalProyect: string;
-
-  @ForeignKey(() => School)
-  @Column
-  schooldId: number;
-
-  @BelongsTo(() => School)
-  school: School;
+  @HasMany(() =>Course)
+  Courses: Course[];
 }
 
-export default Course;
+export default School
