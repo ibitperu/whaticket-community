@@ -12,6 +12,7 @@ import queueRoutes from "./queueRoutes";
 import quickAnswerRoutes from "./quickAnswerRoutes";
 import apiRoutes from "./apiRoutes";
 import coursesRoutes from "./coursesRoutes";
+import schoolRoutes from "./schoolRoutes"
 
 const routes = Router();
 
@@ -25,6 +26,7 @@ routes.use(messageRoutes);
 routes.use(whatsappSessionRoutes);
 routes.use(queueRoutes);
 routes.use(coursesRoutes)
+routes.use(schoolRoutes)
 routes.use(quickAnswerRoutes);
 routes.use("/api/messages", apiRoutes);
 

@@ -16,7 +16,7 @@ import Course from "./Course";
 
 @Table
 class School extends Model<School> {
-   @PrimaryKey
+  @PrimaryKey
   @AutoIncrement
   @Column
   id: number; 
