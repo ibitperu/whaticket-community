@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
+import GetCoursesService from "../services/CourseServices/GetCoursesService";
 
 export const index = async (req: Request, res: Response): Promise<Response> => {
-  return res.json({ message: "Index" });
+  const courses = await GetCoursesService();
+
+  return res.json({ courses });
 };
 
 export const store = async (req: Request, res: Response): Promise<Response> => {

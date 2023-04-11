@@ -37,7 +37,7 @@ class Course extends Model<Course> {
 
   @ForeignKey(() => School)
   @Column
-  schooldId: number;
+  schoolId: number;
 
   @BelongsTo(() => School)
   school: School;
