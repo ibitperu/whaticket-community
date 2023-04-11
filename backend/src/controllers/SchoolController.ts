@@ -25,8 +25,6 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
   const newSchool: SchoolData = req.body;
   const { name, description, enabled } = newSchool;
 
-  console.log(description);
-
   const schema = Yup.object().shape({
     name: Yup.string().required(),
     description: Yup.string(),
