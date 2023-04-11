@@ -7,6 +7,7 @@ interface ExtraInfo {
   name: string;
   value: string;
 }
+
 interface ContactData {
   email?: string;
   number?: string;

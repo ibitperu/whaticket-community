@@ -5,6 +5,7 @@ import createSchoolService from "../services/SchoolServices/CreateSchoolService"
 import AppError from "../errors/AppError";
 import ShowContactService from "../services/ContactServices/ShowContactService";
 import ShowSchoolService from "../services/SchoolServices/ShowSchoolService";
+import UpdateSchoolService from "../services/SchoolServices/UpdateSchoolService";
 
 
 interface SchoolData {
@@ -59,7 +60,26 @@ export const update = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  return res.status(200).json({ message: "Update" });
+  const schoolData: SchoolData = req.body;
+  
+  const schema = Yup.object().shape({
+    name: Yup.string(),
+    description: Yup.string(),
+    enabled: Yup.boolean()
+  });
+
+  try {
+    await schema.validate(schoolData);
+  } catch (err: any) {
+    throw new AppError(err.message);
+  }
+
+  const { schoolId } = req.params;
+   
+  const contact = await UpdateSchoolService({ schoolData, schoolId });
+
+   
+  return res.status(200).json(contact);
 };
 
 export const remove = async (

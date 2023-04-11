@@ -9,5 +9,9 @@ schoolRoutes.get("/schools/:schoolId", SchoolController.show);
 
 schoolRoutes.post("/schools", SchoolController.store);
 
+schoolRoutes.put("/schools/:schoolId", SchoolController.update)
+
+schoolRoutes.delete("/schools/:schoolId", SchoolController.remove)
+
 export default schoolRoutes;
 
