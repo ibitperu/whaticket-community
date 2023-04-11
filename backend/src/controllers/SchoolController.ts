@@ -6,6 +6,7 @@ import AppError from "../errors/AppError";
 import ShowContactService from "../services/ContactServices/ShowContactService";
 import ShowSchoolService from "../services/SchoolServices/ShowSchoolService";
 import UpdateSchoolService from "../services/SchoolServices/UpdateSchoolService";
+import DeleteSchoolService from "../services/SchoolServices/DeleteSchoolService";
 
 
 interface SchoolData {
@@ -86,5 +87,9 @@ export const remove = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  return res.status(200).json({ message: "User deleted" });
+  const { schoolId } = req.params
+
+  await DeleteSchoolService(schoolId)
+
+  return res.status(200).json({ message: "School deleted" });
 };
