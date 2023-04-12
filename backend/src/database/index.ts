@@ -12,6 +12,7 @@ import UserQueue from "../models/UserQueue";
 import QuickAnswer from "../models/QuickAnswer";
 import School from "../models/School";
 import Course from "../models/Course";
+import Module from "../models/Module";
 
 // eslint-disable-next-line
 const dbConfig = require("../config/database");
@@ -33,6 +34,7 @@ const models = [
   QuickAnswer,
   School,
   Course,
+  Module
 ];
 
 sequelize.addModels(models);
