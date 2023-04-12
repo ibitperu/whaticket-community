@@ -1,9 +1,9 @@
 import AppError from "../../errors/AppError";
 import Module from "../../models/Module";
 
-const ShowModuleService = async (courseId: string): Promise<Module> => {
+const ShowModuleService = async (moduleId: string): Promise<Module> => {
   const module = await Module.findOne({
-    where: { id: courseId }
+    where: { id: moduleId }
   });
 
   if (!module) {

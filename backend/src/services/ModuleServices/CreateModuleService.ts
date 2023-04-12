@@ -8,7 +8,7 @@ interface Request {
   courseId: number;
 }
 
-const CreateModuleService = async(moduleData: Request): Promise<Module> => {
+const CreateModuleService = async (moduleData: Request): Promise<Module> => {
   const { name } = moduleData;
 
   const moduleExists = await Module.findOne({
@@ -22,6 +22,6 @@ const CreateModuleService = async(moduleData: Request): Promise<Module> => {
   const module = await Module.create(moduleData);
 
   return module;
-}
+};
 
-export default CreateModuleService
+export default CreateModuleService;
