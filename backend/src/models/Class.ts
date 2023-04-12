@@ -12,10 +12,10 @@ import {
   BelongsTo
 } from "sequelize-typescript";
 import Course from "./Course";
-import Class from "./Class";
+import Module from "./Module";
 
 @Table
-class Module extends Model<Module> {
+class Class extends Model<Class> {
   @PrimaryKey
   @AutoIncrement
   @Column
@@ -29,16 +29,19 @@ class Module extends Model<Module> {
 
   @Column
   enabled: boolean;
-
-  @ForeignKey(() => Course)
+   
   @Column
-  courseId: number;
+  message: string;
 
-  @BelongsTo(() => Course)
-  course: Course;
+  @Column
+  classVideo: string;
 
-  @HasMany(() => Class)
-  classes: Class[];
+  @ForeignKey(() => Module)
+  @Column
+  moduleId: number;
+
+  @BelongsTo(() => Module)
+  module: Module;
 }
 
-export default Module
+export default Class

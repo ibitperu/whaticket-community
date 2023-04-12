@@ -44,7 +44,7 @@ class Course extends Model<Course> {
   school: School;
 
   @HasMany(() => Module)
-  Modules: Module[];
+  modules: Module[];
 }
 
 export default Course;
