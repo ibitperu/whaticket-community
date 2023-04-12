@@ -1,16 +1,16 @@
 import express from "express";
 import * as ModuleController from "../controllers/ModuleController";
 
-
 const modulesRoutes = express.Router();
 
-modulesRoutes.post("/courses", ModuleController.store);
+modulesRoutes.get("/modules/:courseId", ModuleController.index);
 
-modulesRoutes.get("/courses/:courseId", ModuleController.show);
+modulesRoutes.post("/modules/", ModuleController.store);
 
-modulesRoutes.put("/courses/:courseId", ModuleController.update)
+modulesRoutes.get("/modules/:moduleId", ModuleController.show);
 
-modulesRoutes.delete("/courses/:courseId", ModuleController.remove)
+modulesRoutes.put("/modules/:moduleId", ModuleController.update);
 
+modulesRoutes.delete("/modules/:moduleId", ModuleController.remove);
 
 export default modulesRoutes;
