@@ -75,10 +75,10 @@ export const update = async (
 
   const { schoolId } = req.params;
    
-  const contact = await UpdateSchoolService({ schoolData, schoolId });
+  const school = await UpdateSchoolService({ schoolData, schoolId });
 
    
-  return res.status(200).json(contact);
+  return res.status(200).json(school);
 };
 
 export const remove = async (

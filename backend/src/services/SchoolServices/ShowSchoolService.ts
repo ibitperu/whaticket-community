@@ -7,7 +7,7 @@ const ShowSchoolService = async (id: number | string) => {
   });
 
   if (!school) {
-    throw new AppError("ERR_OTHER_OPEN_TICKET");
+    throw new AppError("ERR_SCHOOL_NOT_FOUND");
   }
 
   return school;
