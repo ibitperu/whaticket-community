@@ -12,7 +12,7 @@ interface Request {
   schoolId: string;
 }
 
-const UpdateSchoolService = async ({ schoolData, schoolId }: Request) => {
+const UpdateSchoolService = async ({ schoolData, schoolId }: Request): Promise<School>=> {
   const { name, description, enabled } = schoolData;
 
   const school = await School.findOne({

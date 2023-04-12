@@ -1,7 +1,7 @@
 import AppError from "../../errors/AppError";
 import School from "../../models/School";
 
-const ShowSchoolService = async (id: number | string) => {
+const ShowSchoolService = async (id: number | string): Promise<School>=> {
   const school = await School.findOne({
     where: { id }
   });

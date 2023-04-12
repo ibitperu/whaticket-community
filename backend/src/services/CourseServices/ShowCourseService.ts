@@ -1,7 +1,7 @@
 import AppError from "../../errors/AppError";
 import Course from "../../models/Course";
 
-const ShowCourseService = async (id: number | string) => {
+const ShowCourseService = async (id: number | string): Promise<Course>=> {
   const course = await Course.findOne({
     where: { id }
   });
