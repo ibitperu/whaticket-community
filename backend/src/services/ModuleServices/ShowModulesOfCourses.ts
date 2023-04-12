@@ -1,7 +1,7 @@
 import AppError from "../../errors/AppError";
 import Module from "../../models/Module";
 
-const ShowModulesOfCourses = async (courseId: string) => {
+const ShowModulesOfCourses = async (courseId: string): Promise<Module[]>=> {
   const modules = await Module.findAll({
     where: { courseId },
     attributes: ["id", "name", "description", "enabled"]

@@ -7,7 +7,7 @@ modulesRoutes.get("/modules/:courseId", ModuleController.index);
 
 modulesRoutes.post("/modules/", ModuleController.store);
 
-modulesRoutes.get("/modules/:moduleId", ModuleController.show);
+modulesRoutes.get("/modules/show/:moduleId", ModuleController.show);
 
 modulesRoutes.put("/modules/:moduleId", ModuleController.update);
 

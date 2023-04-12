@@ -15,7 +15,7 @@ interface Request {
   courseId: string;
 }
 
-const UpdateCourseService = async ({ courseData, courseId }: Request) => {
+const UpdateCourseService = async ({ courseData, courseId }: Request): Promise<Course>  => {
   const course = await Course.findOne({
     where: { id: courseId },
     attributes: ["id", "name", "description", "enabled", "finalExam", "finalProyect", "schoolId"]
