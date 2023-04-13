@@ -16,6 +16,7 @@ import schoolRoutes from "./schoolRoutes";
 import modulesRoutes from "./moduleRoutes";
 import classesRoutes from "./classRoutes";
 import companyRoutes from "./companyRoutes";
+import companyContactsRoutes from "./companyContactRoutes";
 
 const routes = Router();
 
@@ -33,6 +34,7 @@ routes.use(schoolRoutes);
 routes.use(modulesRoutes);
 routes.use(classesRoutes);
 routes.use(companyRoutes);
+routes.use(companyContactsRoutes);
 routes.use(quickAnswerRoutes);
 routes.use("/api/messages", apiRoutes);
 

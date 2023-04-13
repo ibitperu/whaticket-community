@@ -25,6 +25,12 @@ class CompanyContact extends Model<CompanyContact> {
 
   @UpdatedAt
   updatedAt: Date;
+
+  @BelongsTo(() => Contact)
+  contact: Contact;
+
+  @BelongsTo(() => Company)
+  company: Company;
 }
 
 export default CompanyContact;
