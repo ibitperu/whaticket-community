@@ -15,6 +15,7 @@ import Course from "../models/Course";
 import Module from "../models/Module";
 import Class from "../models/Class";
 import Company from "../models/Company";
+import CompanyContact from "../models/CompanyContact";
 
 // eslint-disable-next-line
 const dbConfig = require("../config/database");
@@ -38,7 +39,8 @@ const models = [
   Course,
   Module,
   Class,
-  Company
+  Company,
+  CompanyContact
 ];
 
 sequelize.addModels(models);

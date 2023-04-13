@@ -9,10 +9,13 @@ import {
   AllowNull,
   Unique,
   Default,
-  HasMany
+  HasMany,
+  BelongsToMany
 } from "sequelize-typescript";
 import ContactCustomField from "./ContactCustomField";
 import Ticket from "./Ticket";
+import Company from "./Company";
+import CompanyContact from "./CompanyContact";
 
 @Table
 class Contact extends Model<Contact> {
@@ -52,6 +55,9 @@ class Contact extends Model<Contact> {
 
   @HasMany(() => ContactCustomField)
   extraInfo: ContactCustomField[];
+
+  @BelongsToMany(() => Company, () => CompanyContact)
+  companies: Company[];
 }
 
 export default Contact;
