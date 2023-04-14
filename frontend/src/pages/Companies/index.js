@@ -33,11 +33,14 @@ import {
   CardContent,
   Typography,
   Switch,
+  Chip,
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
+import toastError from "../../errors/toastError";
+import api from "../../services/api";
 
-const companies = [
+const companiesExample = [
   {
     id: 1,
     name: "Intel",
@@ -114,6 +117,14 @@ const useStyles = makeStyles((theme) => ({
   card: {
     margin: 10,
     border: "1px solid grey",
+  },
+  enabled: {
+    background: "#4b874b",
+    color: "white",
+  },
+  disabled: {
+    background: "#dd6868",
+    color: "white",
   },
 }));
 
@@ -212,7 +223,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
   const handleCloseAddCourseModal = () => {
     setAddCourseModal(false);
   };
-   
+
   const handleOpenAddStudentModal = () => {
     setAddStudentModalOpen(true);
   };
@@ -252,8 +263,13 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
                 <TableCell align="center">{student.phone}</TableCell>
                 <TableCell align="center">{student.email}</TableCell>
                 <TableCell align="center">
-                    <Button className={classes.link} onClick={handleOpenAddCourseModal}>Ver</Button>
-                  </TableCell>
+                  <Button
+                    className={classes.link}
+                    onClick={handleOpenAddCourseModal}
+                  >
+                    Ver
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -279,7 +295,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
 
 const AddStudentModal = ({ open, onClose, classes }) => {
   return (
-    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth> 
+    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
       <DialogTitle>Agregar estudiante</DialogTitle>
       <DialogContent dividers>
         <form>
@@ -316,7 +332,7 @@ const AddStudentModal = ({ open, onClose, classes }) => {
 
 const ContactsModal = ({ open, onClose, classes, contacts }) => {
   const [addContactModalOpen, setAddContactModalOpen] = useState(false);
-   
+
   const handleOpenAddContactModal = () => {
     setAddContactModalOpen(true);
   };
@@ -372,7 +388,7 @@ const ContactsModal = ({ open, onClose, classes, contacts }) => {
 
 const AddContactModal = ({ open, onClose, classes }) => {
   return (
-    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth> 
+    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
       <DialogTitle>Agregar Contacto</DialogTitle>
       <DialogContent dividers>
         <form>
@@ -412,6 +428,7 @@ const Companies = () => {
   const [companieModalOpen, setCompanieModalOpen] = useState(false);
   const [contactsModalOpen, setContactsModalOpen] = useState(false);
   const [studentsModalOpen, setStudentsModalOpen] = useState(false);
+  const [companies, setCompanies] = useState([]);
 
   const handleOpenCompanieModal = () => {
     setCompanieModalOpen(true);
@@ -435,8 +452,23 @@ const Companies = () => {
 
   const handleCloseContactsModal = () => {
     setContactsModalOpen(false);
-  }; 
+  };
 
+  const fetchCompanies = async () => {
+    try {
+      const { data } = await api.get("/companies/");
+      console.log(data.companies);
+      setCompanies(data.companies);
+    } catch (err) {
+      toastError(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchCompanies();
+  }, []);
+
+  console.log(companies);
   return (
     <MainContainer>
       <AddCompanieModal
@@ -481,9 +513,9 @@ const Companies = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {companies.map((companie) => (
+            {companies?.map((companie, index) => (
               <TableRow key={companie.id}>
-                <ContactsModal
+                {/* <ContactsModal
                   open={contactsModalOpen}
                   onClose={handleCloseContactsModal}
                   classes={classes}
@@ -494,14 +526,14 @@ const Companies = () => {
                   onClose={handleCloseStudentsModal}
                   classes={classes}
                   students={companie.students}
-                />
+                /> */}
                 <TableCell align="center">{companie.name}</TableCell>
                 <TableCell align="center">
                   <Link
                     className={classes.link}
                     onClick={handleOpenContactsModal}
                   >
-                    Ver ({companie.contacts.length})
+                    Ver 4
                   </Link>
                 </TableCell>
                 <TableCell align="center">
@@ -509,11 +541,25 @@ const Companies = () => {
                     className={classes.link}
                     onClick={handleOpenStudentsModal}
                   >
-                    Ver ({companie.students.length})
+                    Ver 10
                   </Link>
                 </TableCell>
-                <TableCell align="center">Habilitado</TableCell>
-                <TableCell align="center">{companie.date}</TableCell>
+                <TableCell align="center">
+                  {companie.enabled ? (
+                    <Chip
+                      label="Activado"
+                      color="success"
+                      className={classes.enabled}
+                    />
+                  ) : (
+                    <Chip
+                      label="Desactivado"
+                      color="success"
+                      className={classes.disabled}
+                    />
+                  )}
+                </TableCell>
+                <TableCell align="center">{companie.createdAt}</TableCell>
                 <TableCell align="center">
                   <IconButton size="small" onClick={handleOpenCompanieModal}>
                     <EditIcon />
