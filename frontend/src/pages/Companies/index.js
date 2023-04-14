@@ -165,7 +165,7 @@ const AddCompanieModal = ({ open, onClose, classes, action }) => {
       });
       handleClose();
       toast.success("Compañía creada con éxito");
-      action()
+      action();
     } catch (err) {
       toastError(err);
     }
@@ -522,7 +522,6 @@ const Companies = () => {
 
   const handleOpenStudentsModal = (companyId) => {
     setStudentsModalOpen(true);
-    console.log(companyId);
     setCurrentCompanyId(companyId);
   };
 
@@ -541,7 +540,6 @@ const Companies = () => {
   const fetchCompanies = async () => {
     try {
       const { data } = await api.get("/companies/");
-      console.log(data.companies);
       setCompanies(data.companies);
     } catch (err) {
       toastError(err);
@@ -556,6 +554,19 @@ const Companies = () => {
     try {
       const { data } = await api.get(`/companies_contacts/${currentCompanyId}`);
       setStudents(data.contacts);
+    } catch (err) {
+      toastError(err);
+    }
+  };
+
+  const handleEnableCompany = async (company, value) => {
+    console.log(company, value);
+    try {
+      const { data } = await api.put(`/companies/${company.id}`, {
+        ...company,
+        enabled: value,
+      });
+      fetchCompanies();
     } catch (err) {
       toastError(err);
     }
@@ -670,7 +681,12 @@ const Companies = () => {
                   <IconButton size="small">
                     <DeleteOutlineIcon />
                   </IconButton>
-                  <Switch />
+                  <Switch
+                    checked={companie.enabled}
+                    onChange={(event, value) =>
+                      handleEnableCompany(companie, value)
+                    }
+                  />
                 </TableCell>
               </TableRow>
             ))}
