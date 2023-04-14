@@ -42,6 +42,7 @@ import toastError from "../../errors/toastError";
 import api from "../../services/api";
 import { Field, Form, Formik } from "formik";
 import { toast } from "react-toastify";
+import ModalConfirmation from "../../components/ModalConfirmation";
 
 const companiesExample = [
   {
@@ -508,9 +509,19 @@ const Companies = () => {
   const [companieModalOpen, setCompanieModalOpen] = useState(false);
   const [contactsModalOpen, setContactsModalOpen] = useState(false);
   const [studentsModalOpen, setStudentsModalOpen] = useState(false);
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [companies, setCompanies] = useState([]);
   const [currentCompanyId, setCurrentCompanyId] = useState(null);
   const [students, setStudents] = useState([]);
+
+  const handleOpenConfirmationModal = (companyId) => {
+    setConfirmationModalOpen(true);
+    setCurrentCompanyId(companyId)
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setConfirmationModalOpen(false);
+  };
 
   const handleOpenCompanieModal = () => {
     setCompanieModalOpen(true);
@@ -560,9 +571,8 @@ const Companies = () => {
   };
 
   const handleEnableCompany = async (company, value) => {
-    console.log(company, value);
     try {
-      const { data } = await api.put(`/companies/${company.id}`, {
+      await api.put(`/companies/${company.id}`, {
         ...company,
         enabled: value,
       });
@@ -572,6 +582,15 @@ const Companies = () => {
     }
   };
 
+  const handleDeleteCompany = async() => {
+    try {
+      await api.delete(`/companies/${currentCompanyId}`);
+      fetchCompanies();
+    } catch (err) {
+      toastError(err);
+    }
+  }
+
   useEffect(() => {
     fetchStudents();
   }, [currentCompanyId]);
@@ -580,7 +599,6 @@ const Companies = () => {
     fetchCompanies();
   }, []);
 
-  console.log(companies);
   return (
     <MainContainer>
       <AddCompanieModal
@@ -595,6 +613,12 @@ const Companies = () => {
         onClose={handleCloseStudentsModal}
         classes={classes}
         students={students}
+      />
+
+      <ModalConfirmation
+        open={confirmationModalOpen}
+        onClose={handleCloseConfirmationModal}
+        action={handleDeleteCompany}
       />
 
       <MainHeader>
@@ -678,7 +702,7 @@ const Companies = () => {
                   <IconButton size="small" onClick={handleOpenCompanieModal}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton size="small">
+                  <IconButton size="small" onClick={() => handleOpenConfirmationModal(companie.id)}>
                     <DeleteOutlineIcon />
                   </IconButton>
                   <Switch

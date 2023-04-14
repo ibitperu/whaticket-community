@@ -11,10 +11,24 @@ import {
   TableHead,
   TableRow,
   Typography,
+  makeStyles,
 } from "@material-ui/core";
 import React from "react";
 
+const useStyles = makeStyles((theme) => ({
+  btnWrapper: {
+    position: "relative",
+  },
+}));
+
 const ModalConfirmation = ({ open, onClose, action }) => {
+  const classes = useStyles();
+
+  const handleAction = () => {
+    action()
+    onClose()
+  }
+
   return (
     <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
       <DialogTitle>Videos</DialogTitle>
@@ -30,7 +44,7 @@ const ModalConfirmation = ({ open, onClose, action }) => {
           color="primary"
           variant="contained"
           className={classes.btnWrapper}
-          onClick={action}
+          onClick={handleAction}
         >
           Añadir
         </Button>
