@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useReducer } from "react";
+import * as Yup from "yup";
 import MainContainer from "../../components/MainContainer";
 import MainHeader from "../../components/MainHeader";
 import MainHeaderButtonsWrapper from "../../components/MainHeaderButtonsWrapper";
@@ -39,6 +40,8 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import toastError from "../../errors/toastError";
 import api from "../../services/api";
+import { Field, Form, Formik } from "formik";
+import { toast } from "react-toastify";
 
 const companiesExample = [
   {
@@ -126,58 +129,118 @@ const useStyles = makeStyles((theme) => ({
     background: "#dd6868",
     color: "white",
   },
+  textField: {
+    marginRight: theme.spacing(1),
+    flex: 1,
+  },
 }));
 
-const AddCompanieModal = ({ open, onClose, classes }) => {
-  const [companyData, setCompanyData] = useState({
-    name: "",
-    description: "",
-    enabled: true
-  })
+const CompanySchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  description: Yup.string().min(8, "Too Short!").max(50, "Too Long!"),
+});
+
+const initialStateCompanyData = {
+  name: "",
+  description: "",
+};
+
+const AddCompanieModal = ({ open, onClose, classes, action }) => {
+  const [companyData, setCompanyData] = useState(initialStateCompanyData);
+  const [enabled, setEnabled] = useState(true);
+
+  const handleClose = () => {
+    onClose();
+    setCompanyData(initialStateCompanyData);
+  };
+
+  const handleCreateCompany = async (values) => {
+    try {
+      await api.post(`/companies/`, {
+        ...values,
+        enabled,
+      });
+      handleClose();
+      toast.success("Compañía creada con éxito");
+      action()
+    } catch (err) {
+      toastError(err);
+    }
+  };
+
+  const handleEnableCompany = (event) => {
+    setEnabled(event.target.checked);
+  };
 
   return (
     <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
       <DialogTitle>Agregar Compañía</DialogTitle>
       <DialogContent dividers>
-        <form>
-          <FormControl fullWidth>
-            <InputLabel>Nombre</InputLabel>
-            <Input type="text" />
-            <TextField
-              id="outlined-multiline-static"
-              label="Descripción"
-              rows={5}
-              // multiline
-            />
-          </FormControl>
-          <FormControl fullWidth>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Typography>Deshabilitado</Typography>
-              <Switch />
-              <Typography>Habilitado</Typography>
-            </div>
-          </FormControl>
-        </form>
-        <FormControl></FormControl>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="secondary" variant="outlined">
-          Cancelar
-        </Button>
-        <Button
-          type="submit"
-          color="primary"
-          variant="contained"
-          className={classes.btnWrapper}
+        <Formik
+          initialValues={companyData}
+          enableReinitialize={true}
+          validationSchema={CompanySchema}
+          onSubmit={(values, actions) => {
+            handleCreateCompany(values);
+            actions.setSubmitting(false);
+          }}
         >
-          Añadir
-        </Button>
-      </DialogActions>
+          {({ values, errors, touched, isSubmitting }) => (
+            <Form>
+              <FormControl fullWidth>
+                <InputLabel>Nombre</InputLabel>
+                <Field
+                  as={Input}
+                  type="text"
+                  autoFocus
+                  name="name"
+                  error={touched.name && Boolean(errors.name)}
+                />
+                <Field
+                  as={TextField}
+                  name="description"
+                  error={touched.description && Boolean(errors.description)}
+                  id="outlined-multiline-static"
+                  label="Descripción"
+                  multiline
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography>Deshabilitado</Typography>
+                  <Switch
+                    checked={enabled}
+                    onChange={handleEnableCompany}
+                    color="primary"
+                  />
+                  <Typography>Habilitado</Typography>
+                </div>
+              </FormControl>
+              <DialogActions>
+                <Button onClick={onClose} color="secondary" variant="outlined">
+                  Cancelar
+                </Button>
+                <Button
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                  className={classes.btnWrapper}
+                >
+                  Añadir
+                </Button>
+              </DialogActions>
+            </Form>
+          )}
+        </Formik>
+      </DialogContent>
     </Dialog>
   );
 };
@@ -513,6 +576,7 @@ const Companies = () => {
         open={companieModalOpen}
         onClose={handleCloseCompanieModal}
         classes={classes}
+        action={fetchCompanies}
       />
 
       <StudentsModal
