@@ -129,6 +129,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddCompanieModal = ({ open, onClose, classes }) => {
+  const [companyData, setCompanyData] = useState({
+    name: "",
+    description: "",
+    enabled: true
+  })
+
   return (
     <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
       <DialogTitle>Agregar Compañía</DialogTitle>
@@ -137,17 +143,24 @@ const AddCompanieModal = ({ open, onClose, classes }) => {
           <FormControl fullWidth>
             <InputLabel>Nombre</InputLabel>
             <Input type="text" />
+            <TextField
+              id="outlined-multiline-static"
+              label="Descripción"
+              rows={5}
+              // multiline
+            />
           </FormControl>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Estado</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              label="Age"
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
             >
-              <MenuItem value={true}>Habilitado</MenuItem>
-              <MenuItem value={false}>Deshabilitado</MenuItem>
-            </Select>
+              <Typography>Deshabilitado</Typography>
+              <Switch />
+              <Typography>Habilitado</Typography>
+            </div>
           </FormControl>
         </form>
         <FormControl></FormControl>
@@ -247,33 +260,37 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
       />
       <DialogTitle>Estudiantes</DialogTitle>
       <DialogContent dividers>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">Nombre</TableCell>
-              <TableCell align="center">Teléfono</TableCell>
-              <TableCell align="center">Email</TableCell>
-              <TableCell align="center">Cursos</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {students.map((student) => (
-              <TableRow key={student.id}>
-                <TableCell align="center">{student.name}</TableCell>
-                <TableCell align="center">{student.phone}</TableCell>
-                <TableCell align="center">{student.email}</TableCell>
-                <TableCell align="center">
-                  <Button
-                    className={classes.link}
-                    onClick={handleOpenAddCourseModal}
-                  >
-                    Ver
-                  </Button>
-                </TableCell>
+        {students.length > 0 ? (
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">Nombre</TableCell>
+                <TableCell align="center">Teléfono</TableCell>
+                <TableCell align="center">Email</TableCell>
+                <TableCell align="center">Cursos</TableCell>
               </TableRow>
+            </TableHead>
+            {students.map((student) => (
+              <TableBody>
+                <TableRow key={student.contact.id}>
+                  <TableCell align="center">{student.contact.name}</TableCell>
+                  <TableCell align="center">{student.contact.number}</TableCell>
+                  <TableCell align="center">{student.contact.email}</TableCell>
+                  <TableCell align="center">
+                    <Button
+                      className={classes.link}
+                      onClick={handleOpenAddCourseModal}
+                    >
+                      Ver
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
             ))}
-          </TableBody>
-        </Table>
+          </Table>
+        ) : (
+          <Typography>No hay estudiantes</Typography>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="secondary" variant="outlined">
@@ -429,6 +446,8 @@ const Companies = () => {
   const [contactsModalOpen, setContactsModalOpen] = useState(false);
   const [studentsModalOpen, setStudentsModalOpen] = useState(false);
   const [companies, setCompanies] = useState([]);
+  const [currentCompanyId, setCurrentCompanyId] = useState(null);
+  const [students, setStudents] = useState([]);
 
   const handleOpenCompanieModal = () => {
     setCompanieModalOpen(true);
@@ -438,8 +457,10 @@ const Companies = () => {
     setCompanieModalOpen(false);
   };
 
-  const handleOpenStudentsModal = () => {
+  const handleOpenStudentsModal = (companyId) => {
     setStudentsModalOpen(true);
+    console.log(companyId);
+    setCurrentCompanyId(companyId);
   };
 
   const handleCloseStudentsModal = () => {
@@ -464,6 +485,23 @@ const Companies = () => {
     }
   };
 
+  const fetchStudents = async () => {
+    if (!currentCompanyId) {
+      return;
+    }
+
+    try {
+      const { data } = await api.get(`/companies_contacts/${currentCompanyId}`);
+      setStudents(data.contacts);
+    } catch (err) {
+      toastError(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudents();
+  }, [currentCompanyId]);
+
   useEffect(() => {
     fetchCompanies();
   }, []);
@@ -475,6 +513,13 @@ const Companies = () => {
         open={companieModalOpen}
         onClose={handleCloseCompanieModal}
         classes={classes}
+      />
+
+      <StudentsModal
+        open={studentsModalOpen}
+        onClose={handleCloseStudentsModal}
+        classes={classes}
+        students={students}
       />
 
       <MainHeader>
@@ -520,28 +565,22 @@ const Companies = () => {
                   onClose={handleCloseContactsModal}
                   classes={classes}
                   contacts={companie.contacts}
-                />
-                <StudentsModal
-                  open={studentsModalOpen}
-                  onClose={handleCloseStudentsModal}
-                  classes={classes}
-                  students={companie.students}
                 /> */}
                 <TableCell align="center">{companie.name}</TableCell>
                 <TableCell align="center">
                   <Link
                     className={classes.link}
-                    onClick={handleOpenContactsModal}
+                    // onClick={}
                   >
-                    Ver 4
+                    Ver
                   </Link>
                 </TableCell>
                 <TableCell align="center">
                   <Link
                     className={classes.link}
-                    onClick={handleOpenStudentsModal}
+                    onClick={() => handleOpenStudentsModal(companie.id)}
                   >
-                    Ver 10
+                    Ver
                   </Link>
                 </TableCell>
                 <TableCell align="center">
