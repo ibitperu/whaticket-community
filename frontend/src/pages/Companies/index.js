@@ -149,7 +149,13 @@ const initialStateCompanyData = {
   description: "",
 };
 
-const AddCompanieModal = ({ open, onClose, classes, action }) => {
+const AddCompanieModal = ({
+  open,
+  onClose,
+  classes,
+  action,
+  dataForUpdate = null,
+}) => {
   const [companyData, setCompanyData] = useState(initialStateCompanyData);
   const [enabled, setEnabled] = useState(true);
 
@@ -172,20 +178,50 @@ const AddCompanieModal = ({ open, onClose, classes, action }) => {
     }
   };
 
+  const handleUpdateCompany = async (values) => {
+    try {
+      await api.put(`/companies/${companyData.id}`, {
+        ...values,
+        enabled,
+      });
+      handleClose();
+      toast.success("Compañía creada con éxito");
+      action();
+    } catch (err) {
+      toastError(err);
+    }
+  };
+
   const handleEnableCompany = (event) => {
     setEnabled(event.target.checked);
   };
 
+  useEffect(() => {
+    if (dataForUpdate) {
+      setCompanyData(dataForUpdate);
+      setEnabled(dataForUpdate.enabled);
+    } else {
+      setCompanyData(initialStateCompanyData);
+      setEnabled(true);
+    }
+  }, [dataForUpdate]);
+
   return (
     <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
-      <DialogTitle>Agregar Compañía</DialogTitle>
+      <DialogTitle>
+        {dataForUpdate ? "Editar Compañía" : "Agregar Compañía"}
+      </DialogTitle>
       <DialogContent dividers>
         <Formik
           initialValues={companyData}
           enableReinitialize={true}
           validationSchema={CompanySchema}
           onSubmit={(values, actions) => {
-            handleCreateCompany(values);
+            if (dataForUpdate) {
+              handleUpdateCompany(values);
+            } else {
+              handleCreateCompany(values);
+            }
             actions.setSubmitting(false);
           }}
         >
@@ -513,17 +549,23 @@ const Companies = () => {
   const [companies, setCompanies] = useState([]);
   const [currentCompanyId, setCurrentCompanyId] = useState(null);
   const [students, setStudents] = useState([]);
+  const [dataForUpdate, setDataForUpdate] = useState({});
 
   const handleOpenConfirmationModal = (companyId) => {
     setConfirmationModalOpen(true);
-    setCurrentCompanyId(companyId)
+    setCurrentCompanyId(companyId);
   };
 
   const handleCloseConfirmationModal = () => {
     setConfirmationModalOpen(false);
   };
 
-  const handleOpenCompanieModal = () => {
+  const handleOpenCompanieModal = (company) => {
+    if (company.id) {
+      setDataForUpdate(company);
+    } else {
+      setDataForUpdate(null);
+    }
     setCompanieModalOpen(true);
   };
 
@@ -582,14 +624,14 @@ const Companies = () => {
     }
   };
 
-  const handleDeleteCompany = async() => {
+  const handleDeleteCompany = async () => {
     try {
       await api.delete(`/companies/${currentCompanyId}`);
       fetchCompanies();
     } catch (err) {
       toastError(err);
     }
-  }
+  };
 
   useEffect(() => {
     fetchStudents();
@@ -606,6 +648,7 @@ const Companies = () => {
         onClose={handleCloseCompanieModal}
         classes={classes}
         action={fetchCompanies}
+        dataForUpdate={dataForUpdate}
       />
 
       <StudentsModal
@@ -699,10 +742,16 @@ const Companies = () => {
                 </TableCell>
                 <TableCell align="center">{companie.createdAt}</TableCell>
                 <TableCell align="center">
-                  <IconButton size="small" onClick={handleOpenCompanieModal}>
+                  <IconButton
+                    size="small"
+                    onClick={() => handleOpenCompanieModal(companie)}
+                  >
                     <EditIcon />
                   </IconButton>
-                  <IconButton size="small" onClick={() => handleOpenConfirmationModal(companie.id)}>
+                  <IconButton
+                    size="small"
+                    onClick={() => handleOpenConfirmationModal(companie.id)}
+                  >
                     <DeleteOutlineIcon />
                   </IconButton>
                   <Switch
