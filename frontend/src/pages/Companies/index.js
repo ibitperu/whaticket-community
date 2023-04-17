@@ -43,6 +43,7 @@ import api from "../../services/api";
 import { Field, Form, Formik } from "formik";
 import { toast } from "react-toastify";
 import ModalConfirmation from "../../components/ModalConfirmation";
+import convertToFormatDate from "../../helpers/convertToFormatDate";
 
 const companiesExample = [
   {
@@ -740,7 +741,9 @@ const Companies = () => {
                     />
                   )}
                 </TableCell>
-                <TableCell align="center">{companie.createdAt}</TableCell>
+                <TableCell align="center">
+                  {convertToFormatDate(companie.createdAt)}
+                </TableCell>
                 <TableCell align="center">
                   <IconButton
                     size="small"
