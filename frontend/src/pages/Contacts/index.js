@@ -430,7 +430,7 @@ const Contacts = () => {
                   <TableCell align="center">
                     <Button className={classes.link} onClick={handleOpenAddCourseModal}>Ver cursos</Button>
                   </TableCell>
-                  <TableCell align="center">Ibit</TableCell>
+                  <TableCell align="center">{contact.companies.length > 0 ? contact.companies[0].name : ""}</TableCell>
                   <TableCell align="center">Si</TableCell>
                   <TableCell align="center">03/02/23</TableCell>
                   <TableCell align="center">

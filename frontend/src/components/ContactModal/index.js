@@ -118,6 +118,9 @@ const MenuProps = {
 
 const ContactModal = ({ open, onClose, contactId, initialValues, onSave }) => {
   const [selected, setSelected] = useState([]);
+  const [companySelected, setCompanySelected] = useState("");
+  const [companies, setCompanies] = useState([]);
+
   const isAllSelected =
     options.length > 0 && selected.length === options.length;
 
@@ -128,6 +131,19 @@ const ContactModal = ({ open, onClose, contactId, initialValues, onSave }) => {
       return;
     }
     setSelected(value);
+  };
+
+  const handleCompanyChange = (event) => {
+    setCompanySelected(event.target.value);
+  };
+
+  const fetchCompanies = async () => {
+    try {
+      const { data } = await api.get("/companies/");
+      setCompanies(data.companies);
+    } catch (err) {
+      toastError(err);
+    }
   };
 
   const classes = useStyles();
@@ -142,6 +158,7 @@ const ContactModal = ({ open, onClose, contactId, initialValues, onSave }) => {
   const [contact, setContact] = useState(initialState);
 
   useEffect(() => {
+    fetchCompanies();
     return () => {
       isMounted.current = false;
     };
@@ -207,7 +224,10 @@ const ContactModal = ({ open, onClose, contactId, initialValues, onSave }) => {
           validationSchema={ContactSchema}
           onSubmit={(values, actions) => {
             setTimeout(() => {
-              handleSaveContact(values);
+              handleSaveContact({
+                ...values,
+                companySelected,
+              });
               actions.setSubmitting(false);
             }, 400);
           }}
@@ -293,6 +313,22 @@ const ContactModal = ({ open, onClose, contactId, initialValues, onSave }) => {
                             <Checkbox checked={selected.indexOf(option) > -1} />
                           </ListItemIcon>
                           <ListItemText primary={option} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+                <div>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel id="mutiple-select-label">Empresa</InputLabel>
+                    <Select
+                      labelId="mutiple-select-label"
+                      value={companySelected}
+                      onChange={handleCompanyChange}
+                    >
+                      {companies.map((company) => (
+                        <MenuItem key={company.id} value={company.id}>
+                          {company.name}
                         </MenuItem>
                       ))}
                     </Select>
