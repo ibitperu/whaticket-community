@@ -3,6 +3,8 @@ import * as CompaniesContactsController from "../controllers/CompaniesContactsCo
 
 const companyContactsRoutes = express.Router();
 
-companyContactsRoutes.get("/companies_contacts/:companyId", CompaniesContactsController.show);
+companyContactsRoutes.get("/companies_contacts/:companyId", CompaniesContactsController.showContacts);
+
+companyContactsRoutes.get("/contacts_companies/:contactId", CompaniesContactsController.showCompany)
 
 export default companyContactsRoutes;

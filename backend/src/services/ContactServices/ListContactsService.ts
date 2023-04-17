@@ -1,5 +1,8 @@
 import { Sequelize, Op } from "sequelize";
 import Contact from "../../models/Contact";
+import ShowCompanyForContact from "../CompanyContactsServices/ShowCompanyForContact";
+import Company from "../../models/Company";
+import CompanyContact from "../../models/CompanyContact";
 
 interface Request {
   searchParam?: string;
@@ -20,7 +23,7 @@ const ListContactsService = async ({
     [Op.or]: [
       {
         name: Sequelize.where(
-          Sequelize.fn("LOWER", Sequelize.col("name")),
+          Sequelize.fn("LOWER", Sequelize.col("Contact.name")),
           "LIKE",
           `%${searchParam.toLowerCase().trim()}%`
         )
@@ -33,10 +36,27 @@ const ListContactsService = async ({
 
   const { count, rows: contacts } = await Contact.findAndCountAll({
     where: whereCondition,
+    include: [
+      {
+        model: Company,
+        attributes: ["id", "name"]
+      }
+    ],
     limit,
     offset,
     order: [["name", "ASC"]]
   });
+
+  // const contactsWithCompany = contacts.map(contact => {
+  //   return {
+  //     ...contact,
+  //     company: ShowCompanyForContact(contact.dataValues.id).datavalues
+  //   };
+  //   // console.log(contact.dataValues)
+  //   // console.log(ShowCompanyForContact(contact.dataValues.id))
+  // });
+
+  // console.log(contactsWithCompany);
 
   const hasMore = count > offset + contacts.length;
 
@@ -44,6 +64,7 @@ const ListContactsService = async ({
     contacts,
     count,
     hasMore
+    // contactsWithCompany
   };
 };
 
