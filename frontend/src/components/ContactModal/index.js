@@ -118,7 +118,7 @@ const MenuProps = {
 
 const ContactModal = ({ open, onClose, contactId, initialValues, onSave }) => {
   const [selected, setSelected] = useState([]);
-  const [companySelected, setCompanySelected] = useState("");
+  const [companyId, setCompanyId] = useState("");
   const [companies, setCompanies] = useState([]);
 
   const isAllSelected =
@@ -134,7 +134,7 @@ const ContactModal = ({ open, onClose, contactId, initialValues, onSave }) => {
   };
 
   const handleCompanyChange = (event) => {
-    setCompanySelected(event.target.value);
+    setCompanyId(event.target.value);
   };
 
   const fetchCompanies = async () => {
@@ -199,8 +199,11 @@ const ContactModal = ({ open, onClose, contactId, initialValues, onSave }) => {
         handleClose();
       } else {
         const { data } = await api.post("/contacts", values);
+
+        console.log(data)
         if (onSave) {
-          onSave(data);
+          console.log("fetch en el modal")
+          await onSave();
         }
         handleClose();
       }
@@ -226,7 +229,7 @@ const ContactModal = ({ open, onClose, contactId, initialValues, onSave }) => {
             setTimeout(() => {
               handleSaveContact({
                 ...values,
-                companySelected,
+                companyId,
               });
               actions.setSubmitting(false);
             }, 400);
@@ -323,7 +326,7 @@ const ContactModal = ({ open, onClose, contactId, initialValues, onSave }) => {
                     <InputLabel id="mutiple-select-label">Empresa</InputLabel>
                     <Select
                       labelId="mutiple-select-label"
-                      value={companySelected}
+                      value={companyId}
                       onChange={handleCompanyChange}
                     >
                       {companies.map((company) => (

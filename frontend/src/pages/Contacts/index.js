@@ -25,9 +25,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
-import {
-  Switch,
-} from "@material-ui/core";
+import { Switch } from "@material-ui/core";
 
 import api from "../../services/api";
 import TableRowSkeleton from "../../components/TableRowSkeleton";
@@ -220,21 +218,25 @@ const Contacts = () => {
     setPageNumber(1);
   }, [searchParam]);
 
+  const fetchContacts = async () => {
+    console.log("fetchContacts");
+    try {
+      const { data } = await api.get("/contacts/", {
+        params: { searchParam, pageNumber },
+      });
+
+      console.log(data);
+      dispatch({ type: "LOAD_CONTACTS", payload: data.contacts });
+      setHasMore(data.hasMore);
+      setLoading(false);
+    } catch (err) {
+      toastError(err);
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     const delayDebounceFn = setTimeout(() => {
-      const fetchContacts = async () => {
-        try {
-          const { data } = await api.get("/contacts/", {
-            params: { searchParam, pageNumber },
-          });
-          dispatch({ type: "LOAD_CONTACTS", payload: data.contacts });
-          setHasMore(data.hasMore);
-          setLoading(false);
-        } catch (err) {
-          toastError(err);
-        }
-      };
       fetchContacts();
     }, 500);
     return () => clearTimeout(delayDebounceFn);
@@ -326,6 +328,11 @@ const Contacts = () => {
     }
   };
 
+  const handleOnSave = () => {
+    setPageNumber(1);
+    setSearchParam("");
+  };
+
   return (
     <MainContainer className={classes.mainContainer}>
       <ContactModal
@@ -333,6 +340,7 @@ const Contacts = () => {
         onClose={handleCloseContactModal}
         aria-labelledby="form-dialog-title"
         contactId={selectedContactId}
+        onSave={fetchContacts}
       ></ContactModal>
       <CoursesModal
         open={addCourseModal}
@@ -428,9 +436,18 @@ const Contacts = () => {
                   <TableCell align="center">{contact.number}</TableCell>
                   <TableCell align="center">{contact.email}</TableCell>
                   <TableCell align="center">
-                    <Button className={classes.link} onClick={handleOpenAddCourseModal}>Ver cursos</Button>
+                    <Button
+                      className={classes.link}
+                      onClick={handleOpenAddCourseModal}
+                    >
+                      Ver cursos
+                    </Button>
                   </TableCell>
-                  <TableCell align="center">{contact.companies.length > 0 ? contact.companies[0].name : ""}</TableCell>
+                  <TableCell align="center">
+                    {contact?.companies?.length > 0
+                      ? contact.companies[0].name
+                      : ""}
+                  </TableCell>
                   <TableCell align="center">Si</TableCell>
                   <TableCell align="center">03/02/23</TableCell>
                   <TableCell align="center">

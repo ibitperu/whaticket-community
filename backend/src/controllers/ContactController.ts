@@ -33,6 +33,7 @@ interface ContactData {
   number: string;
   email?: string;
   extraInfo?: ExtraInfo[];
+  companyId?: string;
 }
 
 export const index = async (req: Request, res: Response): Promise<Response> => {
@@ -70,7 +71,7 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
 
   try {
     await schema.validate(newContact);
-  } catch (err) {
+  } catch (err: any) {
     throw new AppError(err.message);
   }
 
@@ -83,13 +84,15 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
   let number = validNumber
   let email = newContact.email
   let extraInfo = newContact.extraInfo
+  let companyId = newContact.companyId
 
   const contact = await CreateContactService({
     name,
     number,
     email,
     extraInfo,
-    profilePicUrl
+    profilePicUrl,
+    companyId
   });
 
   const io = getIO();
@@ -125,7 +128,7 @@ export const update = async (
 
   try {
     await schema.validate(contactData);
-  } catch (err) {
+  } catch (err: any) {
     throw new AppError(err.message);
   }
 
