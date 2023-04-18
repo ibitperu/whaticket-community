@@ -18,7 +18,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
-import { Visibility } from '@material-ui/icons';
+import { Visibility } from "@material-ui/icons";
 
 import {
   FormControl,
@@ -36,10 +36,13 @@ import {
   FormControlLabel,
   Checkbox,
   Switch,
+  Chip,
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { CloudUploadOutlined, PhotoCamera } from "@material-ui/icons";
+import api from "../../services/api";
+import toastError from "../../errors/toastError";
 
 const useStyles = makeStyles((theme) => ({
   mainPaper: {
@@ -69,54 +72,54 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const courses = [
-  {
-    id: 1,
-    name: "Programación básica",
-    students: [
-      {
-        id: 1,
-        name: "Miguel",
-        progress: "54/199",
-        company: "Ibit",
-      },
-      {
-        id: 2,
-        name: "Pedro",
-        progress: "54/199",
-        company: "Ibit",
-      },
-    ],
-    classes: [],
-    school: "Programación",
-    final_exam: null,
-    proyect: null,
-    enable: true,
-  },
-  {
-    id: 2,
-    name: "Marketing",
-    students: [
-      {
-        id: 1,
-        name: "Miguel",
-        progress: "54/199",
-        company: "Ibit",
-      },
-      {
-        id: 2,
-        name: "Pedro",
-        progress: "54/199",
-        company: "Ibit",
-      },
-    ],
-    classes: [],
-    school: "Programación",
-    final_exam: null,
-    proyect: null,
-    enable: true,
-  },
-];
+// const courses = [
+//   {
+//     id: 1,
+//     name: "Programación básica",
+//     students: [
+//       {
+//         id: 1,
+//         name: "Miguel",
+//         progress: "54/199",
+//         company: "Ibit",
+//       },
+//       {
+//         id: 2,
+//         name: "Pedro",
+//         progress: "54/199",
+//         company: "Ibit",
+//       },
+//     ],
+//     classes: [],
+//     school: "Programación",
+//     final_exam: null,
+//     proyect: null,
+//     enable: true,
+//   },
+//   {
+//     id: 2,
+//     name: "Marketing",
+//     students: [
+//       {
+//         id: 1,
+//         name: "Miguel",
+//         progress: "54/199",
+//         company: "Ibit",
+//       },
+//       {
+//         id: 2,
+//         name: "Pedro",
+//         progress: "54/199",
+//         company: "Ibit",
+//       },
+//     ],
+//     classes: [],
+//     school: "Programación",
+//     final_exam: null,
+//     proyect: null,
+//     enable: true,
+//   },
+// ];
 
 const videos = [
   {
@@ -603,6 +606,7 @@ const AddClasesModal = ({ open, onClose, classes }) => {
 };
 
 const Courses = () => {
+  const [courses, setCourses] = useState();
   const [studentsModalOpen, setStudentsModalOpen] = useState(false);
   const [addCourseModal, setAddCourseModal] = useState(false);
   const [addClassModal, setAddClassModal] = useState(false);
@@ -632,6 +636,19 @@ const Courses = () => {
   };
 
   const classes = useStyles();
+
+  const fetchCourses = async () => {
+    try {
+      const { data } = await api.get("/courses/");
+      setCourses(data.courses);
+    } catch (err) {
+      toastError(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
 
   return (
     <MainContainer>
@@ -683,21 +700,22 @@ const Courses = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {courses.map((course) => (
+            {courses?.map((course) => (
               <TableRow key={course.id}>
-                <StudentsModal
+                {/* <StudentsModal
                   open={studentsModalOpen}
                   onClose={handleCloseStudentsModal}
                   classes={classes}
                   students={course.students}
-                />
+                /> */}
                 <TableCell align="center">{course.name}</TableCell>
                 <TableCell align="center">
                   <Link
                     className={classes.link}
                     onClick={handleOpenStudentsModal}
                   >
-                    Ver ({course.students.length})
+                    {/* Ver ({course.students.length}) */}
+                    Ver
                   </Link>
                 </TableCell>
                 <TableCell align="center">
@@ -705,14 +723,28 @@ const Courses = () => {
                     <Visibility />
                   </IconButton>
                 </TableCell>
-                <TableCell align="center">{course.school}</TableCell>
+                <TableCell align="center">{course.school.name}</TableCell>
                 <TableCell align="center">
                   <Link className={classes.link}>Ver examen</Link>
                 </TableCell>
                 <TableCell align="center">
                   <Link className={classes.link}>Ver proyecto</Link>
                 </TableCell>
-                <TableCell align="center">Habilitado</TableCell>
+                <TableCell align="center">
+                  {course.enabled ? (
+                    <Chip
+                      label="Activado"
+                      color="success"
+                      className={classes.enabled}
+                    />
+                  ) : (
+                    <Chip
+                      label="Desactivado"
+                      color="success"
+                      className={classes.disabled}
+                    />
+                  )}
+                </TableCell>
                 <TableCell align="center">
                   <IconButton size="small" onClick={handleOpenAddCourseModal}>
                     <EditIcon />

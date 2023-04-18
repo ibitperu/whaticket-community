@@ -18,6 +18,7 @@ import QuestionAnswerOutlinedIcon from "@material-ui/icons/QuestionAnswerOutline
 import ClassIcon from '@material-ui/icons/Class';
 import Business from "@material-ui/icons/Business"
 import { VolumeUpRounded } from "@material-ui/icons";
+import SchoolIcon from '@material-ui/icons/School';
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 
 import { i18n } from "../translate/i18n";
@@ -149,6 +150,11 @@ const MainListItems = (props) => {
               to="/courses"
               primary="Cursos"
               icon={<ClassIcon />}
+            />
+            <ListItemLink
+              to="/schools"
+              primary="Escuelas"
+              icon={<SchoolIcon />}
             />
           </>
         )}

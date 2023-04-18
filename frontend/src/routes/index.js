@@ -21,6 +21,8 @@ import Courses from "../pages/Courses/"
 import { AuthProvider } from "../context/Auth/AuthContext";
 import { WhatsAppsProvider } from "../context/WhatsApp/WhatsAppsContext";
 import Route from "./Route";
+import { School } from "@material-ui/icons";
+import Schools from "../pages/Schools";
 
 const Routes = () => {
   return (
@@ -58,6 +60,7 @@ const Routes = () => {
               <Route exact path="/Reports" component={Reports} isPrivate />
               <Route exact path="/companies" component={Companies} isPrivate />
               <Route exact path="/courses" component={Courses} isPrivate />
+              <Route exact path="/schools" component={Schools} isPrivate />
             </LoggedInLayout>
           </WhatsAppsProvider>
         </Switch>
