@@ -397,7 +397,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
         <Button onClick={onClose} color="secondary" variant="outlined">
           Cancelar
         </Button>
-        <Button
+        {/* <Button
           type="submit"
           color="primary"
           variant="contained"
@@ -405,7 +405,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
           onClick={handleOpenAddStudentModal}
         >
           Añadir
-        </Button>
+        </Button> */}
       </DialogActions>
     </Dialog>
   );
