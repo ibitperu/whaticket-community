@@ -70,6 +70,17 @@ const useStyles = makeStyles((theme) => ({
   typography: {
     marginRight: 7,
   },
+  modal: {
+    width: "800px",
+  },
+  enabled: {
+    background: "#4b874b",
+    color: "white",
+  },
+  disabled: {
+    background: "#dd6868",
+    color: "white",
+  },
 }));
 
 // const courses = [
@@ -121,235 +132,419 @@ const useStyles = makeStyles((theme) => ({
 //   },
 // ];
 
-const videos = [
-  {
-    id: 1,
-    name: "Escritura por consola",
-    description: "Aprende como escribir por consola",
-    enable: true,
-  },
-  {
-    id: 2,
-    name: "Estructuras de datos",
-    description: "Aprende como escribir por consola",
-    enable: true,
-  },
-  {
-    id: 3,
-    name: "Condicionales",
-    description: "Aprende como escribir por consola",
-    enable: true,
-  },
-  {
-    id: 1,
-    name: "Bucles",
-    description: "Aprende como escribir por consola",
-    enable: true,
-  },
-];
+// const AddStudentModal = ({ open, onClose, classes, students }) => {
+//   return (
+//     <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
+//       <MainHeader>
+//         <DialogTitle>Agregar Estudiante</DialogTitle>
+//         <MainHeaderButtonsWrapper>
+//           <TextField
+//             placeholder="Buscar estudiante"
+//             type="search"
+//             InputProps={{
+//               startAdornment: (
+//                 <InputAdornment position="start">
+//                   <SearchIcon style={{ color: "gray" }} />
+//                 </InputAdornment>
+//               ),
+//             }}
+//           />
+//         </MainHeaderButtonsWrapper>
+//       </MainHeader>
+//       <DialogContent dividers>
+//         <Table size="small" className={classes.studentTable}>
+//           <TableHead>
+//             <TableRow>F. Inicio: 02/01/2023</TableRow>
+//             <TableRow>
+//               <TableCell align="center">N</TableCell>
+//               <TableCell align="center">Nombre</TableCell>
+//               <TableCell align="center">Empresa</TableCell>
+//             </TableRow>
+//           </TableHead>
+//           <TableBody>
+//             {students.map((student) => (
+//               <TableRow key={student.id}>
+//                 <TableCell align="center">
+//                   <FormControlLabel control={<Checkbox />} />
+//                 </TableCell>
+//                 <TableCell align="center">{student.name}</TableCell>
+//                 <TableCell align="center">{student.company}</TableCell>
+//               </TableRow>
+//             ))}
+//           </TableBody>
+//         </Table>
+//       </DialogContent>
+//       <DialogActions>
+//         <Button onClick={onClose} color="secondary" variant="outlined">
+//           Cancelar
+//         </Button>
+//          <Button
+//           type="submit"
+//           color="primary"
+//           variant="contained"
+//           className={classes.btnWrapper}
+//         >
+//           Añadir
+//         </Button>
+//         <Button
+//           type="submit"
+//           color="primary"
+//           variant="contained"
+//           className={classes.btnWrapper}
+//         >
+//           Añadir
+//         </Button>
+//       </DialogActions>
+//     </Dialog>
+//   );
+// };
 
-const AddStudentModal = ({ open, onClose, classes, students }) => {
-  console.log(students);
+// const AddCourseModal = ({ open, onClose, classes, modulesData }) => {
+//   return (
+//     <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
+//       <DialogTitle>Agregar Curso</DialogTitle>
+//       <DialogContent dividers>
+//         <form>
+//           <FormControl fullWidth>
+//             <InputLabel>Nombre</InputLabel>
+//             <Input type="text" />
+//           </FormControl>
+//           <FormControl fullWidth>
+//             <InputLabel>Cantidad de videos</InputLabel>
+//             <Input type="text" />
+//           </FormControl>
+//           <FormControl fullWidth>
+//             <InputLabel>Escuela</InputLabel>
+//             <Input type="text" />
+//           </FormControl>
 
-  return (
-    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
-      <MainHeader>
-        <DialogTitle>Agregar Estudiante</DialogTitle>
-        <MainHeaderButtonsWrapper>
-          <TextField
-            placeholder="Buscar estudiante"
-            type="search"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon style={{ color: "gray" }} />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </MainHeaderButtonsWrapper>
-      </MainHeader>
-      <DialogContent dividers>
-        <Table size="small" className={classes.studentTable}>
-          <TableHead>
-            <TableRow>F. Inicio: 02/01/2023</TableRow>
-            <TableRow>
-              <TableCell align="center">N</TableCell>
-              <TableCell align="center">Nombre</TableCell>
-              <TableCell align="center">Empresa</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {students.map((student) => (
-              <TableRow key={student.id}>
-                <TableCell align="center">
-                  <FormControlLabel control={<Checkbox />} />
-                </TableCell>
-                <TableCell align="center">{student.name}</TableCell>
-                <TableCell align="center">{student.company}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="secondary" variant="outlined">
-          Cancelar
-        </Button>
-        <Button
-          type="submit"
-          color="primary"
-          variant="contained"
-          className={classes.btnWrapper}
-        >
-          Añadir
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-};
+//           <IconButton
+//             color="primary"
+//             aria-label="upload picture"
+//             component="label"
+//           >
+//             <Typography className={classes.typography}>Examen final</Typography>
+//             <input hidden accept="image/*" type="file" />
+//             <CloudUploadOutlined />
+//           </IconButton>
 
-const VideosModal = ({ open, onClose, classes }) => {
-  return (
-    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
-      <DialogTitle>Videos</DialogTitle>
-      <DialogContent dividers>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">N</TableCell>
-              <TableCell align="center">Título</TableCell>
-              <TableCell align="center">Estado</TableCell>
-              <TableCell align="center">Acción</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {videos.map((video, index) => (
-              <TableRow key={video.id}>
-                <TableCell align="center">{index + 1}</TableCell>
-                <TableCell align="center">{video.name}</TableCell>
-                <TableCell align="center">Habilitado</TableCell>
-                <TableCell align="center">
-                  <Link className={classes.link}>Enviar</Link>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="secondary" variant="outlined">
-          Cancelar
-        </Button>
-        <Button
-          type="submit"
-          color="primary"
-          variant="contained"
-          className={classes.btnWrapper}
-        >
-          Añadir
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-};
+//           <IconButton
+//             color="primary"
+//             aria-label="upload picture"
+//             component="label"
+//           >
+//             <Typography className={classes.typography}>
+//               Proyecto final
+//             </Typography>
+//             <input hidden accept="image/*" type="file" />
+//             <CloudUploadOutlined />
+//           </IconButton>
+//           <FormControlLabel
+//             value="start"
+//             control={<Switch color="primary" />}
+//             label="Habilitado"
+//             labelPlacement="start"
+//           />
+//         </form>
+//         <Table size="small" className={classes.studentTable}>
+//           <TableHead>
+//             <TableRow>F. Inicio: 08/01/2023</TableRow>
+//             <TableRow>
+//               <TableCell align="center">N</TableCell>
+//               <TableCell align="center">Nombre</TableCell>
+//               <TableCell align="center">Descripción</TableCell>
+//               <TableCell align="center">Acciones</TableCell>
+//             </TableRow>
+//           </TableHead>
+//           <TableBody>
+//             {modulesData?.map((module, index) => (
+//               <TableRow key={module.id}>
+//                 <TableCell align="center">{index + 1}</TableCell>
+//                 <TableCell align="center">{module.name}</TableCell>
+//                 <TableCell align="center">{module.description}</TableCell>
+//                 <TableCell align="center">
+//                   <IconButton size="small">
+//                     <EditIcon />
+//                   </IconButton>
+//                   <IconButton size="small">
+//                     <DeleteOutlineIcon />
+//                   </IconButton>
+//                 </TableCell>
+//               </TableRow>
+//             ))}
+//           </TableBody>
+//         </Table>
+//       </DialogContent>
+//       <DialogActions>
+//         <Button onClick={onClose} color="secondary" variant="outlined">
+//           Cancelar
+//         </Button>
+//          <Button
+//           type="submit"
+//           color="primary"
+//           variant="contained"
+//           className={classes.btnWrapper}
+//         >
+//           Añadir
+//         </Button>
+//         <Button
+//           type="submit"
+//           color="primary"
+//           variant="contained"
+//           className={classes.btnWrapper}
+//         >
+//           Añadir
+//         </Button>
+//       </DialogActions>
+//     </Dialog>
+//   );
+// };
 
-const AddCourseModal = ({ open, onClose, classes }) => {
-  return (
-    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
-      <DialogTitle>Agregar Curso</DialogTitle>
-      <DialogContent dividers>
-        <form>
-          <FormControl fullWidth>
-            <InputLabel>Nombre</InputLabel>
-            <Input type="text" />
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel>Cantidad de videos</InputLabel>
-            <Input type="text" />
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel>Escuela</InputLabel>
-            <Input type="text" />
-          </FormControl>
+// const StudentsModal = ({ open, onClose, classes, students }) => {
+//   const [addStudentModalOpen, setAddStudentModalOpen] = useState(false);
+//   const [addCourseModal, setAddCourseModal] = useState(false);
 
-          <IconButton
-            color="primary"
-            aria-label="upload picture"
-            component="label"
-          >
-            <Typography className={classes.typography}>Examen final</Typography>
-            <input hidden accept="image/*" type="file" />
-            <CloudUploadOutlined />
-          </IconButton>
+//   const handleOpenAddStudentModal = () => {
+//     setAddStudentModalOpen(true);
+//   };
 
-          <IconButton
-            color="primary"
-            aria-label="upload picture"
-            component="label"
-          >
-            <Typography className={classes.typography}>
-              Proyecto final
-            </Typography>
-            <input hidden accept="image/*" type="file" />
-            <CloudUploadOutlined />
-          </IconButton>
-          <FormControlLabel
-            value="start"
-            control={<Switch color="primary" />}
-            label="Habilitado"
-            labelPlacement="start"
-          />
-        </form>
-        <Table size="small" className={classes.studentTable}>
-          <TableHead>
-            <TableRow>F. Inicio: 08/01/2023</TableRow>
-            <TableRow>
-              <TableCell align="center">N</TableCell>
-              <TableCell align="center">Nombre</TableCell>
-              <TableCell align="center">Descripción</TableCell>
-              <TableCell align="center">Acciones</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {videos.map((video, index) => (
-              <TableRow key={video.id}>
-                <TableCell align="center">{index + 1}</TableCell>
-                <TableCell align="center">{video.name}</TableCell>
-                <TableCell align="center">{video.description}</TableCell>
-                <TableCell align="center">
-                  <IconButton size="small">
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton size="small">
-                    <DeleteOutlineIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="secondary" variant="outlined">
-          Cancelar
-        </Button>
-        <Button
-          type="submit"
-          color="primary"
-          variant="contained"
-          className={classes.btnWrapper}
-        >
-          Añadir
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-};
+//   const handleCloseAddStudentModal = () => {
+//     setAddStudentModalOpen(false);
+//   };
+
+//   const handleOpenAddCourseModal = () => {
+//     setAddCourseModal(true);
+//   };
+
+//   const handleCloseAddCourseModal = () => {
+//     setAddCourseModal(false);
+//   };
+
+//   return (
+//     <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
+//       <AddStudentModal
+//         open={addStudentModalOpen}
+//         onClose={handleCloseAddStudentModal}
+//         classes={classes}
+//         students={students}
+//       />
+
+//       <MainHeader>
+//         <DialogTitle>Estudiantes</DialogTitle>
+//         <MainHeaderButtonsWrapper>
+//           <TextField
+//             placeholder="Buscar estudiante"
+//             type="search"
+//             InputProps={{
+//               startAdornment: (
+//                 <InputAdornment position="start">
+//                   <SearchIcon style={{ color: "gray" }} />
+//                 </InputAdornment>
+//               ),
+//             }}
+//           />
+//           <Button
+//             variant="contained"
+//             color="primary"
+//             onClick={handleOpenAddStudentModal}
+//           >
+//             Agregar estudiante
+//           </Button>
+//         </MainHeaderButtonsWrapper>
+//       </MainHeader>
+//       <DialogContent dividers>
+//         <Table size="small" className={classes.studentTable}>
+//           <TableHead>
+//             <TableRow>F. Inicio: 02/01/2023</TableRow>
+//             <TableRow>
+//               <TableCell align="center">Nombre</TableCell>
+//               <TableCell align="center">Empresa</TableCell>
+//               <TableCell align="center">Progreso</TableCell>
+//               <TableCell align="center">Acciones</TableCell>
+//             </TableRow>
+//           </TableHead>
+//           <TableBody>
+//             {students.map((student) => (
+//               <TableRow key={student.id}>
+//                 <TableCell align="center">{student.name}</TableCell>
+//                 <TableCell align="center">{student.company}</TableCell>
+//                 <TableCell align="center">{student.progress}</TableCell>
+//                 <TableCell align="center">
+//                   <Link className={classes.link}>
+//                     Ver videos
+//                   </Link>
+//                 </TableCell>
+//               </TableRow>
+//             ))}
+//           </TableBody>
+//         </Table>
+//         <Table size="small" className={classes.studentTable}>
+//           <TableHead>
+//             <TableRow>F. Inicio: 08/01/2023</TableRow>
+//             <TableRow>
+//               <TableCell align="center">Nombre</TableCell>
+//               <TableCell align="center">Empresa</TableCell>
+//               <TableCell align="center">Progreso</TableCell>
+//               <TableCell align="center">Acciones</TableCell>
+//             </TableRow>
+//           </TableHead>
+//           <TableBody>
+//             {students.map((student) => (
+//               <TableRow key={student.id}>
+//                 <TableCell align="center">{student.name}</TableCell>
+//                 <TableCell align="center">{student.company}</TableCell>
+//                 <TableCell align="center">{student.progress}</TableCell>
+//                 <TableCell align="center">
+//                   <Link className={classes.link}>
+//                     Ver videos
+//                   </Link>
+//                 </TableCell>
+//               </TableRow>
+//             ))}
+//           </TableBody>
+//         </Table>
+//       </DialogContent>
+//       <DialogActions>
+//         <Button onClick={onClose} color="secondary" variant="outlined">
+//           Cancelar
+//         </Button>
+//         {/* <Button
+//           type="submit"
+//           color="primary"
+//           variant="contained"
+//           className={classes.btnWrapper}
+//           onClick={handleOpenAddStudentModal}
+//         >
+//           Añadir
+//         </Button> */}
+//       </DialogActions>
+//     </Dialog>
+//   );
+// };
+
+// const AddClassModal = ({ open, onClose, classes }) => {
+//   return (
+//     <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
+//       <DialogTitle>Agregar clases</DialogTitle>
+//       <DialogContent dividers>
+//         <form>
+//           <FormControl fullWidth>
+//             <InputLabel>Nombre</InputLabel>
+//             <Input type="text" />
+//           </FormControl>
+//           <TextField
+//             fullWidth
+//             id="outlined-textarea"
+//             label="Descripción"
+//             placeholder="Escriba su descripción..."
+//             multiline
+//           />
+//           <IconButton
+//             color="primary"
+//             aria-label="upload picture"
+//             component="label"
+//           >
+//             <Typography className={classes.typography}>Video</Typography>
+//             <input hidden accept="image/*" type="file" />
+//             <CloudUploadOutlined />
+//           </IconButton>
+//           <FormControlLabel
+//             value="start"
+//             control={<Switch color="primary" />}
+//             label="Habilitado"
+//             labelPlacement="start"
+//           />
+//         </form>
+//       </DialogContent>
+//       <DialogActions>
+//         <Button onClick={onClose} color="secondary" variant="outlined">
+//           Cancelar
+//         </Button>
+//         <Button
+//           type="submit"
+//           color="primary"
+//           variant="contained"
+//           className={classes.btnWrapper}
+//         >
+//           Aceptar
+//         </Button>
+
+//       </DialogActions>
+//     </Dialog>
+//   );
+// };
+
+// const AddClasesModal = ({ open, onClose, classes }) => {
+//   const videos=[]
+//   const [addClassOpenModel, setAddClassOpenModel] = useState(false);
+
+//   const handleOpenAddClassModel = () => {
+//     setAddClassOpenModel(true);
+//   };
+
+//   const handleCloseAddClassModel = () => {
+//     setAddClassOpenModel(false);
+//   };
+
+//   return (
+//     <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
+//       <AddClassModal
+//         open={addClassOpenModel}
+//         onClose={handleCloseAddClassModel}
+//         classes={classes}
+//       />
+//       <DialogTitle>Clases</DialogTitle>
+//       <DialogContent dividers>
+//         <Table size="small">
+//           <TableHead>
+//             <TableRow>
+//               <TableCell align="center">N</TableCell>
+//               <TableCell align="center">Título</TableCell>
+//               <TableCell align="center">Estado</TableCell>
+//               <TableCell align="center">Acción</TableCell>
+//             </TableRow>
+//           </TableHead>
+//           <TableBody>
+//             {videos.map((video, index) => (
+//               <TableRow key={index}>
+//                 <TableCell align="center">{index + 1}</TableCell>
+//                 <TableCell align="center">{video.name}</TableCell>
+//                 <TableCell align="center">Habilitado</TableCell>
+//                 <TableCell align="center">
+//                   <IconButton size="small">
+//                     <EditIcon />
+//                   </IconButton>
+//                   <IconButton size="small">
+//                     <DeleteOutlineIcon />
+//                   </IconButton>
+//                   <Switch />
+//                 </TableCell>
+//               </TableRow>
+//             ))}
+//           </TableBody>
+//         </Table>
+//       </DialogContent>
+//       <DialogActions>
+//         <Button onClick={onClose} color="secondary" variant="outlined">
+//           Cancelar
+//         </Button>
+//         <Button
+//           type="submit"
+//           color="primary"
+//           variant="contained"
+//           className={classes.btnWrapper}
+//           onClick={handleOpenAddClassModel}
+//         >
+//           Añadir
+//         </Button>
+
+//       </DialogActions>
+//     </Dialog>
+//   );
+// };
 
 const StudentsModal = ({ open, onClose, classes, students }) => {
   const [addStudentModalOpen, setAddStudentModalOpen] = useState(false);
-  const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [addCourseModal, setAddCourseModal] = useState(false);
 
   const handleOpenAddStudentModal = () => {
@@ -358,14 +553,6 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
 
   const handleCloseAddStudentModal = () => {
     setAddStudentModalOpen(false);
-  };
-
-  const handleOpenVideoModal = () => {
-    setVideoModalOpen(true);
-  };
-
-  const handleCloseVideoModal = () => {
-    setVideoModalOpen(false);
   };
 
   const handleOpenAddCourseModal = () => {
@@ -384,16 +571,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
         classes={classes}
         students={students}
       />
-      <AddCourseModal
-        open={addCourseModal}
-        onClose={handleCloseAddCourseModal}
-        classes={classes}
-      />
-      <VideosModal
-        open={videoModalOpen}
-        onClose={handleCloseVideoModal}
-        classes={classes}
-      />
+
       <MainHeader>
         <DialogTitle>Estudiantes</DialogTitle>
         <MainHeaderButtonsWrapper>
@@ -435,7 +613,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
                 <TableCell align="center">{student.company}</TableCell>
                 <TableCell align="center">{student.progress}</TableCell>
                 <TableCell align="center">
-                  <Link className={classes.link} onClick={handleOpenVideoModal}>
+                  <Link className={classes.link}>
                     Ver videos
                   </Link>
                 </TableCell>
@@ -460,7 +638,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
                 <TableCell align="center">{student.company}</TableCell>
                 <TableCell align="center">{student.progress}</TableCell>
                 <TableCell align="center">
-                  <Link className={classes.link} onClick={handleOpenVideoModal}>
+                  <Link className={classes.link}>
                     Ver videos
                   </Link>
                 </TableCell>
@@ -473,7 +651,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
         <Button onClick={onClose} color="secondary" variant="outlined">
           Cancelar
         </Button>
-        {/* <Button
+        <Button
           type="submit"
           color="primary"
           variant="contained"
@@ -481,7 +659,50 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
           onClick={handleOpenAddStudentModal}
         >
           Añadir
-        </Button> */}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+ 
+
+const AddModuleModal = ({ open, onClose, classes }) => {
+  return (
+    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
+      <DialogTitle>Agregar modulo</DialogTitle>
+      <DialogContent dividers>
+        <form>
+          <FormControl fullWidth>
+            <InputLabel>Nombre</InputLabel>
+            <Input type="text" />
+          </FormControl>
+          <TextField
+            fullWidth
+            id="outlined-textarea"
+            label="Descripción"
+            placeholder="Escriba su descripción..."
+            multiline
+          />
+          <FormControlLabel
+            value="start"
+            control={<Switch color="primary" />}
+            label="Habilitado"
+            labelPlacement="start"
+          />
+        </form>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary" variant="outlined">
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          className={classes.btnWrapper}
+        >
+          Aceptar
+        </Button>
       </DialogActions>
     </Dialog>
   );
@@ -502,6 +723,13 @@ const AddClassModal = ({ open, onClose, classes }) => {
             id="outlined-textarea"
             label="Descripción"
             placeholder="Escriba su descripción..."
+            multiline
+          />
+          <TextField
+            fullWidth
+            id="outlined-textarea"
+            label="Mensaje"
+            placeholder="Escriba su mensaje..."
             multiline
           />
           <IconButton
@@ -538,22 +766,29 @@ const AddClassModal = ({ open, onClose, classes }) => {
   );
 };
 
-const AddClasesModal = ({ open, onClose, classes }) => {
-  const [addClassOpenModel, setAddClassOpenModel] = useState(false);
+const ClassesModal = ({ open, onClose, classes, classesData }) => {
+  const [classModalOpen, setAddClassModalOpen] = useState(false);
 
-  const handleOpenAddClassModel = () => {
-    setAddClassOpenModel(true);
+  const handleOpenAddClassesModal = () => {
+    setAddClassModalOpen(true);
   };
 
-  const handleCloseAddClassModel = () => {
-    setAddClassOpenModel(false);
+  const handleCloseAddClassesModal = () => {
+    setAddClassModalOpen(false);
   };
 
   return (
-    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      scroll="paper"
+      fullWidth
+      maxWidth={700}
+      className={classes.Modal}
+    >
       <AddClassModal
-        open={addClassOpenModel}
-        onClose={handleCloseAddClassModel}
+        open={classModalOpen}
+        onClose={handleCloseAddClassesModal}
         classes={classes}
       />
       <DialogTitle>Clases</DialogTitle>
@@ -563,27 +798,57 @@ const AddClasesModal = ({ open, onClose, classes }) => {
             <TableRow>
               <TableCell align="center">N</TableCell>
               <TableCell align="center">Título</TableCell>
+              <TableCell align="center">Mensaje</TableCell>
+              <TableCell align="center">Video</TableCell>
               <TableCell align="center">Estado</TableCell>
               <TableCell align="center">Acción</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {videos.map((video, index) => (
-              <TableRow key={index}>
-                <TableCell align="center">{index + 1}</TableCell>
-                <TableCell align="center">{video.name}</TableCell>
-                <TableCell align="center">Habilitado</TableCell>
-                <TableCell align="center">
-                  <IconButton size="small">
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton size="small">
-                    <DeleteOutlineIcon />
-                  </IconButton>
-                  <Switch />
-                </TableCell>
-              </TableRow>
-            ))}
+            {classesData?.map((module, index) => {
+              return (
+                <>
+                  <TableRow key={module.id}>
+                    <TableCell align="center">{index + 1}</TableCell>
+                    <TableCell align="center">
+                      <Typography>
+                        <b>{module.name}</b>
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography>{module.message}</Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Link className={classes.link}>{module.classVideo}</Link>
+                    </TableCell>
+                    <TableCell align="center">
+                      {module.enabled ? (
+                        <Chip
+                          label="Activado"
+                          color="success"
+                          className={classes.enabled}
+                        />
+                      ) : (
+                        <Chip
+                          label="Desactivado"
+                          color="success"
+                          className={classes.disabled}
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell align="center">
+                      <IconButton size="small">
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton size="small">
+                        <DeleteOutlineIcon />
+                      </IconButton>
+                      <Switch />
+                    </TableCell>
+                  </TableRow>
+                </>
+              );
+            })}
           </TableBody>
         </Table>
       </DialogContent>
@@ -596,7 +861,122 @@ const AddClasesModal = ({ open, onClose, classes }) => {
           color="primary"
           variant="contained"
           className={classes.btnWrapper}
-          onClick={handleOpenAddClassModel}
+          onClick={handleOpenAddClassesModal}
+        >
+          Añadir
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+const VideosModal = ({ open, onClose, classes, modules }) => {
+  const [currentClasses, setCurrentClasses] = useState([]);
+  const [classModalOpen, setClassModalOpen] = useState(false);
+  const [addModuleModalOpen, setAddModuleModalOpen] = useState(false);
+
+  const handleOpenAddModuleModal = () => {
+    setAddModuleModalOpen(true);
+  };
+
+  const handleCloseAddModuleModal = () => {
+    setAddModuleModalOpen(false);
+  };
+
+  const handleOpenClassesModal = (classesData) => {
+    setClassModalOpen(true);
+    setCurrentClasses(classesData);
+  };
+
+  const handleCloseClassesModal = () => {
+    setClassModalOpen(false);
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose} scroll="paper" maxWidth={700}>
+      <ClassesModal
+        open={classModalOpen}
+        onClose={handleCloseClassesModal}
+        classes={classes}
+        classesData={currentClasses}
+      />
+      <AddModuleModal
+        open={addModuleModalOpen}
+        onClose={handleCloseAddModuleModal}
+        classes={classes}
+      />
+      <DialogTitle>Módulos</DialogTitle>
+      <DialogContent dividers>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">N</TableCell>
+              <TableCell align="center">Título</TableCell>
+              <TableCell align="center">Estado</TableCell>
+              <TableCell align="center">Clases</TableCell>
+              <TableCell align="center">Acción</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {modules?.map((module, index) => {
+              return (
+                <>
+                  <TableRow key={module.id}>
+                    <TableCell align="center">{index + 1}</TableCell>
+                    <TableCell align="center">
+                      <Typography>
+                        <b>{module.name}</b>
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      {module.enabled ? (
+                        <Chip
+                          label="Activado"
+                          color="success"
+                          className={classes.enabled}
+                        />
+                      ) : (
+                        <Chip
+                          label="Desactivado"
+                          color="success"
+                          className={classes.disabled}
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell align="center">
+                      <Link
+                        className={classes.link}
+                        onClick={() => handleOpenClassesModal(module.classes)}
+                      >
+                        Ver clases
+                      </Link>
+                    </TableCell>
+                    <TableCell align="center">
+                      <IconButton size="small">
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton size="small">
+                        <DeleteOutlineIcon />
+                      </IconButton>
+                      <Switch />
+                    </TableCell>
+                  </TableRow>
+                </>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary" variant="outlined">
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          className={classes.btnWrapper}
+          onClick={handleOpenAddModuleModal}
         >
           Añadir
         </Button>
@@ -607,9 +987,22 @@ const AddClasesModal = ({ open, onClose, classes }) => {
 
 const Courses = () => {
   const [courses, setCourses] = useState();
+  const [modules, setModules] = useState([]);
+  const [currentModules, setCurrentModules] = useState([]);
   const [studentsModalOpen, setStudentsModalOpen] = useState(false);
   const [addCourseModal, setAddCourseModal] = useState(false);
   const [addClassModal, setAddClassModal] = useState(false);
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
+  // const []
+
+  const handleOpenVideoModal = (modules) => {
+    setCurrentModules(modules);
+    setVideoModalOpen(true);
+  };
+
+  const handleCloseVideoModal = () => {
+    setVideoModalOpen(false);
+  };
 
   const handleOpenStudentsModal = () => {
     setStudentsModalOpen(true);
@@ -652,15 +1045,11 @@ const Courses = () => {
 
   return (
     <MainContainer>
-      <AddCourseModal
-        open={addCourseModal}
-        onClose={handleCloseAddCourseModal}
+      <VideosModal
+        open={videoModalOpen}
+        onClose={handleCloseVideoModal}
         classes={classes}
-      />
-      <AddClasesModal
-        open={addClassModal}
-        onClose={handleCloseAddClassesModal}
-        classes={classes}
+        modules={currentModules}
       />
       <MainHeader>
         <Title>Cursos</Title>
@@ -702,12 +1091,6 @@ const Courses = () => {
           <TableBody>
             {courses?.map((course) => (
               <TableRow key={course.id}>
-                {/* <StudentsModal
-                  open={studentsModalOpen}
-                  onClose={handleCloseStudentsModal}
-                  classes={classes}
-                  students={course.students}
-                /> */}
                 <TableCell align="center">{course.name}</TableCell>
                 <TableCell align="center">
                   <Link
@@ -719,7 +1102,9 @@ const Courses = () => {
                   </Link>
                 </TableCell>
                 <TableCell align="center">
-                  <IconButton onClick={handleOpenAddClassesModal}>
+                  <IconButton
+                    onClick={() => handleOpenVideoModal(course.modules)}
+                  >
                     <Visibility />
                   </IconButton>
                 </TableCell>
