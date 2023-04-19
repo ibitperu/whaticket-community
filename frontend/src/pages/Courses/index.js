@@ -543,9 +543,216 @@ const useStyles = makeStyles((theme) => ({
 //   );
 // };
 
-const StudentsModal = ({ open, onClose, classes, students }) => {
+const classesDataForSend = [
+  {
+    id: 1,
+    name: "Programación básica",
+    description: "Programación básica descripción",
+    message: "Hoy aprenderás todo sobre programación básica",
+    classVideo: "google.com",
+    enabled: true,
+  },
+  {
+    id: 2,
+    name: "Programación básica 2",
+    description: "Programación básica descripción 2",
+    message: "Hoy aprenderás todo sobre programación básica",
+    classVideo: "google.com",
+    enabled: true,
+  }
+]
+
+const SendClassesModal = ({ open, onClose, classes, classesData }) => {
+  console.log(classesData)
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      scroll="paper"
+      fullWidth
+      maxWidth={700}
+      className={classes.Modal}
+    >
+      <DialogTitle>Clases</DialogTitle>
+      <DialogContent dividers>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">N</TableCell>
+              <TableCell align="center">Título</TableCell>
+              <TableCell align="center">Mensaje</TableCell>
+              <TableCell align="center">Video</TableCell>
+              <TableCell align="center">Estado</TableCell>
+              <TableCell align="center">Acción</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {classesDataForSend?.map((module, index) => {
+              return (
+                <>
+                  <TableRow key={module.id}>
+                    <TableCell align="center">{index + 1}</TableCell>
+                    <TableCell align="center">
+                      <Typography>
+                        <b>{module.name}</b>
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography>{module.message}</Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Link className={classes.link}>{module.classVideo}</Link>
+                    </TableCell>
+                    <TableCell align="center">
+                      {module.enabled ? (
+                        <Chip
+                          label="Activado"
+                          color="success"
+                          className={classes.enabled}
+                        />
+                      ) : (
+                        <Chip
+                          label="Desactivado"
+                          color="success"
+                          className={classes.disabled}
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell align="center">
+                     <Link className={classes.link}>Enviar video</Link> 
+                    </TableCell>
+                  </TableRow>
+                </>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary" variant="outlined">
+          Cancelar
+        </Button>
+        {/* <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          className={classes.btnWrapper}
+          // onClick={handleOpenAddClassesModal}
+        >
+          Añadir
+        </Button> */}
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+const AddStudentModal = ({ open, onClose, classes }) => {
+  const [students, setStudents] = useState([]);
+
+  const fetchContacts = async () => {
+    console.log("fetchContacts");
+    try {
+      const { data } = await api.get("/contacts/");
+      console.log(data);
+
+      setStudents(data.contacts);
+    } catch (err) {
+      toastError(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchContacts();
+  }, []);
+
+  return (
+    <Dialog open={open} onClose={onClose} scroll="paper" fullWidth>
+      <MainHeader>
+        <DialogTitle>Agregar Estudiante</DialogTitle>
+        <MainHeaderButtonsWrapper>
+          <TextField
+            placeholder="Buscar estudiante"
+            type="search"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon style={{ color: "gray" }} />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </MainHeaderButtonsWrapper>
+      </MainHeader>
+      <DialogContent dividers>
+        <Table size="small" className={classes.studentTable}>
+          <TableHead>
+            <TableRow>F. Inicio: 02/01/2023</TableRow>
+            <TableRow>
+              <TableCell align="center">N</TableCell>
+              <TableCell align="center">Nombre</TableCell>
+              <TableCell align="center">Empresa</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {students?.map((student) => (
+              <TableRow key={student.id}>
+                <TableCell align="center">
+                  <FormControlLabel control={<Checkbox />} />
+                </TableCell>
+                <TableCell align="center">{student.name}</TableCell>
+                <TableCell align="center">{student.company}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary" variant="outlined">
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          className={classes.btnWrapper}
+        >
+          Añadir
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+const StudentsModal = ({ open, onClose, classes, classesData }) => {
   const [addStudentModalOpen, setAddStudentModalOpen] = useState(false);
   const [addCourseModal, setAddCourseModal] = useState(false);
+  const [students, setStudents] = useState([]);
+  const [sendClassesModalOpen, setSendClassesModalOpen] = useState(false);
+
+
+  const fetchContacts = async () => {
+    console.log("fetchContacts");
+    try {
+      const { data } = await api.get("/contacts/");
+      console.log(data);
+
+      setStudents(data.contacts);
+    } catch (err) {
+      toastError(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchContacts();
+  }, []);
+
+  const handleOpenSendClassesModal = () => {
+    setSendClassesModalOpen(true);
+  };
+
+  const handleCloseSendClassesModal = () => {
+    setSendClassesModalOpen(false);
+  };
 
   const handleOpenAddStudentModal = () => {
     setAddStudentModalOpen(true);
@@ -570,6 +777,12 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
         onClose={handleCloseAddStudentModal}
         classes={classes}
         students={students}
+      />
+       <SendClassesModal
+        open={sendClassesModalOpen}
+        onClose={handleCloseSendClassesModal}
+        classes={classes}
+        classesData={classesData}
       />
 
       <MainHeader>
@@ -613,9 +826,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
                 <TableCell align="center">{student.company}</TableCell>
                 <TableCell align="center">{student.progress}</TableCell>
                 <TableCell align="center">
-                  <Link className={classes.link}>
-                    Ver videos
-                  </Link>
+                  <Link className={classes.link} onClick={handleOpenSendClassesModal}>Ver videos</Link>
                 </TableCell>
               </TableRow>
             ))}
@@ -638,9 +849,7 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
                 <TableCell align="center">{student.company}</TableCell>
                 <TableCell align="center">{student.progress}</TableCell>
                 <TableCell align="center">
-                  <Link className={classes.link}>
-                    Ver videos
-                  </Link>
+                  <Link className={classes.link}>Ver videos</Link>
                 </TableCell>
               </TableRow>
             ))}
@@ -664,7 +873,6 @@ const StudentsModal = ({ open, onClose, classes, students }) => {
     </Dialog>
   );
 };
- 
 
 const AddModuleModal = ({ open, onClose, classes }) => {
   return (
@@ -989,11 +1197,11 @@ const Courses = () => {
   const [courses, setCourses] = useState();
   const [modules, setModules] = useState([]);
   const [currentModules, setCurrentModules] = useState([]);
+  const [currentStudents, setCurrentStudents] = useState([]);
   const [studentsModalOpen, setStudentsModalOpen] = useState(false);
   const [addCourseModal, setAddCourseModal] = useState(false);
   const [addClassModal, setAddClassModal] = useState(false);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
-  // const []
 
   const handleOpenVideoModal = (modules) => {
     setCurrentModules(modules);
@@ -1050,6 +1258,13 @@ const Courses = () => {
         onClose={handleCloseVideoModal}
         classes={classes}
         modules={currentModules}
+      />
+      <StudentsModal
+        open={studentsModalOpen}
+        onClose={handleCloseStudentsModal}
+        classes={classes}
+        students={currentStudents}
+        classesData={currentModules}
       />
       <MainHeader>
         <Title>Cursos</Title>
